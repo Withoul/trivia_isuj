@@ -1,0 +1,30 @@
+# Python files
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Flutter files
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+
+# Local databases
+*.db
+*.db-journal
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
