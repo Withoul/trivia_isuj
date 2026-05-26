@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # Mantenemos una cadena de conexión por defecto local por simplicidad para la prueba
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/trivia_db"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/triviaisuj"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

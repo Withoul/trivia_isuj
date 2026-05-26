@@ -29,6 +29,27 @@ class ApiService {
     return null;
   }
 
+  Future<bool> register(String correo, String contrasena, String nombre, String apellido, String institucion, String cedula, String telefono) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/auth/register'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'correo': correo,
+        'contrasena': contrasena,
+        'primer_nombre': nombre,
+        'segundo_nombre': '',
+        'primer_apellido': apellido,
+        'segundo_apellido': '',
+        'institucion': institucion,
+        'cedula': cedula,
+        'telefono': telefono,
+        'tipo_perfil': 'JUGADOR'
+      }),
+    );
+
+    return response.statusCode == 200 || response.statusCode == 201;
+  }
+
   Future<List<dynamic>> getActiveBanks() async {
     final token = await _getToken();
     if (token == null) return [];
@@ -76,5 +97,20 @@ class ApiService {
     );
 
     return response.statusCode == 200;
+  }
+
+  Future<List<dynamic>> getGlobalRankings() async {
+    final token = await _getToken();
+    if (token == null) return [];
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/ranks/global'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return [];
   }
 }

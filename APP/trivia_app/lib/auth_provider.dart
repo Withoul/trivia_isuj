@@ -2,15 +2,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'database_helper.dart';
 import 'api_service.dart';
 
-final authProvider = StateNotifierProvider<AuthNotifier, bool>((ref) {
-  return AuthNotifier();
-});
+final authProvider = NotifierProvider<AuthNotifier, bool>(AuthNotifier.new);
 
-class AuthNotifier extends StateNotifier<bool> {
+class AuthNotifier extends Notifier<bool> {
   final ApiService _apiService = ApiService();
 
-  AuthNotifier() : super(false) {
+  @override
+  bool build() {
     checkAuth();
+    return false;
   }
 
   Future<void> checkAuth() async {

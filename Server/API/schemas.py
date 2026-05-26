@@ -12,6 +12,8 @@ class UsuarioBase(BaseModel):
     segundo_apellido: Optional[str] = None
     institucion: str
     tipo_perfil: PerfilEnum
+    cedula: Optional[str] = None
+    telefono: Optional[str] = None
 
 class UsuarioCreate(UsuarioBase):
     contrasena: str
@@ -83,5 +85,17 @@ class ScoreResponse(BaseModel):
     banco_id: int
     puntaje_neto: int
     completado_en: datetime
+    class Config:
+        from_attributes = True
+
+# --- RANKING ---
+class RankingResponse(BaseModel):
+    usuario_id: int
+    primer_nombre: str
+    primer_apellido: str
+    correo: str
+    institucion: str
+    puntaje_acumulado: int
+    accuracy: int  # Porcentaje de aciertos (mockeado o calculado, ej. 85%)
     class Config:
         from_attributes = True

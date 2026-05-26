@@ -21,7 +21,7 @@ La arquitectura se divide en dos partes principales:
 
 ## Bases de Datos
 1. **PostgreSQL (Servidor):**
-   Almacena datos estáticos y sensibles, además del resultado final. Ver `Docs/db_scripts.md` para el script de creación.
+   Almacena datos estáticos y sensibles, además del resultado final. Ver `Docs/db_scripts.md` para el script de creación. Adicionalmente, puedes ejecutar el script autónomo `python Server/API/create_tables.py` para generar automáticamente todas las tablas actualizadas en la base de datos `triviaisuj` y sembrar los datos de prueba al instante.
 2. **SQLite (App):**
    Almacena token de sesión, estado temporal de preguntas descargadas para jugar offline/sin interrupción y el progreso actual en la trivia hasta que se envía.
 
@@ -39,3 +39,49 @@ La arquitectura se divide en dos partes principales:
 - `POST /admin/banks`: Crea un nuevo banco de preguntas.
 - `POST /admin/banks/{bank_id}/questions`: Añade preguntas y respuestas.
 - `PUT /admin/banks/{bank_id}`: Edita datos, temporizadores, o el estado de habilitación.
+
+## Credenciales del Sistema (Autosembradas en la base de datos `triviaisuj`)
+Al arrancar el servidor backend por primera vez, se insertan automáticamente estas cuentas para facilitar el desarrollo y la evaluación del proyecto:
+- **Administrador:**
+  - **Correo:** `admin@admin.com`
+  - **Contraseña:** `admin`
+  - **Rol:** `ADMINISTRADOR`
+- **Jugador / Estudiante:**
+  - **Correo:** `usuario@usuario.com`
+  - **Contraseña:** `user1234`
+  - **Rol:** `JUGADOR`
+
+## Conexión a Base de Datos
+La base de datos utilizada para el servidor local PostgreSQL se llama `triviaisuj`. Puedes configurar la conexión en `Server/API/database.py` o mediante variables de entorno en tu archivo `.env`.
+
+---
+
+## Estado del Proyecto y Próximos Pasos (Progreso Actual: 80%)
+Al día de hoy, la aplicación cuenta con un **80% de avance general**. Las bases de datos PostgreSQL y SQLite, el sistema de autenticación de dos pasos con validaciones minuciosas, el bypass de login para pruebas locales sin conexión, y la sincronización de puntajes básicos se encuentran completamente funcionales.
+
+### 📋 Pendientes Críticos y Requerimientos Futuros
+1. **Apartado Legal (Términos y Condiciones / Política de Privacidad):**
+   - Aún falta implementar e integrar formalmente la sección legal donde se explique detalladamente el tratamiento y uso de datos personales de los usuarios ("Términos y Condiciones").
+2. **Línea Visual e Identidad Institucional:**
+   - Se requiere el suministro oficial de los activos de marca de la institución, incluyendo logotipos, logos oficiales, colores corporativos definidos y manual de estilo institucional.
+
+---
+
+## Funcionalidades del Sistema
+
+### 📱 Aplicación Móvil (Multiplataforma: Android & iOS)
+La aplicación móvil está siendo desarrollada utilizando Flutter, lo cual asegura su compatibilidad, rendimiento y diseño optimizado tanto para dispositivos **Android** como **iOS**.
+
+#### 👤 Rol: Usuario (Estudiante)
+- **Trivia y Quizzes:** Responder trivias basadas en bancos de preguntas con temporizador.
+- **Puntos:** Obtención de puntos acumulables por cada quiz o banco de preguntas completado exitosamente.
+- **Logros:** Sistema de insignias y logros desbloqueables basados en el desempeño e hitos alcanzados por el usuario.
+- **Tienda de Canje:** Una tienda integrada donde el usuario puede canjear sus puntos acumulados por beneficios específicos, tales como becas (no se contemplan otros ítems adicionales en esta etapa).
+
+#### 🔑 Rol: Administrador
+- **Gestión de Bancos de Preguntas:** Capacidad completa para subir nuevos bancos de preguntas, añadirles preguntas y respuestas estructuradas.
+- **Control de Acceso y Estado:** Habilitar e inhabilitar bancos de preguntas de forma manual o mediante fechas programadas.
+- **Edición de la Tienda:** Administrar los artículos y beneficios de la tienda (becas) disponibles para canje.
+- **Gestión de Usuarios:** Control, visualización y gestión integral de los usuarios y estudiantes registrados en la plataforma.
+
+

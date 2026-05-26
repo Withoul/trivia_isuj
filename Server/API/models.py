@@ -19,6 +19,8 @@ class Usuario(Base):
     primer_apellido = Column(String(100), nullable=False)
     segundo_apellido = Column(String(100))
     institucion = Column(String(255), nullable=False)
+    cedula = Column(String(20), nullable=True)
+    telefono = Column(String(20), nullable=True)
     tipo_perfil = Column(Enum(PerfilEnum), default=PerfilEnum.JUGADOR, nullable=False)
     creado_en = Column(DateTime, default=datetime.utcnow)
 
