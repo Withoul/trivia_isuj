@@ -99,3 +99,19 @@ class RankingResponse(BaseModel):
     accuracy: int  # Porcentaje de aciertos (mockeado o calculado, ej. 85%)
     class Config:
         from_attributes = True
+
+# --- PROFILE RESPONSE ---
+class UserProfileResponse(BaseModel):
+    id: int
+    correo: str
+    primer_nombre: str
+    primer_apellido: str
+    institucion: str
+    cedula: Optional[str] = None
+    telefono: Optional[str] = None
+    tipo_perfil: str
+    puntaje_total: int
+    quizzes_completados: int
+    racha_maxima: int
+    class Config:
+        from_attributes = True

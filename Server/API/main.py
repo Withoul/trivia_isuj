@@ -12,6 +12,8 @@ from database import get_db, engine
 # Create tables if they don't exist
 models.Base.metadata.create_all(bind=engine)
 
+# TODO [PRE-PRODUCCIÓN]: Deshabilitar seed automático. 
+# La cuenta admin@admin.com con contraseña 'admin' debe eliminarse o forzar cambio de contraseña en primer login.
 def seed_data():
     from database import SessionLocal
     db = SessionLocal()
@@ -25,7 +27,7 @@ def seed_data():
                 contrasena=hashed_pw,
                 primer_nombre="Admin",
                 primer_apellido="Sistema",
-                institucion="Universidad del Japón",
+                institucion="Instituto Superior Universitario Japón",
                 cedula="1799999999",
                 telefono="0999999999",
                 tipo_perfil=models.PerfilEnum.ADMINISTRADOR
@@ -109,6 +111,29 @@ def login(form_data: schemas.LoginRequest, db: Session = Depends(get_db)):
     db.commit()
 
     return {"access_token": access_token, "token_type": "bearer", "usuario": user}
+
+@app.get("/users/me/profile", response_model=schemas.UserProfileResponse)
+def get_my_profile(db: Session = Depends(get_db), current_user: models.Usuario = Depends(auth.get_current_user)):
+    # Calculate real student stats from the Puntaje database table
+    total_score_query = db.query(func.sum(models.Puntaje.puntaje_neto)).filter(models.Puntaje.usuario_id == current_user.id).scalar()
+    total_score = total_score_query if total_score_query is not None else 0
+
+    quizzes_count = db.query(func.count(func.distinct(models.Puntaje.banco_id))).filter(models.Puntaje.usuario_id == current_user.id).scalar()
+    quizzes_count = quizzes_count if quizzes_count is not None else 0
+
+    return {
+        "id": current_user.id,
+        "correo": current_user.correo,
+        "primer_nombre": current_user.primer_nombre,
+        "primer_apellido": current_user.primer_apellido or "",
+        "institucion": current_user.institucion or "",
+        "cedula": current_user.cedula,
+        "telefono": current_user.telefono,
+        "tipo_perfil": current_user.tipo_perfil.value,
+        "puntaje_total": total_score,
+        "quizzes_completados": quizzes_count,
+        "racha_maxima": 0,
+    }
 
 
 # --- BANCOS DE PREGUNTAS (JUGADOR Y ADMIN) ---
@@ -224,6 +249,10 @@ def get_global_rankings(db: Session = Depends(get_db), current_user: models.Usua
 
 
 # --- ADMIN ENDPOINTS ---
+
+@app.get("/admin/banks", response_model=List[schemas.BancoPreguntasResponse])
+def get_all_banks_for_admin(db: Session = Depends(get_db), current_admin: models.Usuario = Depends(auth.get_current_admin)):
+    return db.query(models.BancoPreguntas).all()
 
 @app.post("/admin/banks", response_model=schemas.BancoPreguntasResponse)
 def create_bank(bank: schemas.BancoPreguntasCreate, db: Session = Depends(get_db), current_admin: models.Usuario = Depends(auth.get_current_admin)):

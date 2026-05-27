@@ -31,7 +31,7 @@ def reset_and_create_tables():
             contrasena=hashed_admin_pw,
             primer_nombre="Admin",
             primer_apellido="Sistema",
-            institucion="Universidad del Japón",
+            institucion="Instituto Superior Universitario Japón",
             cedula="1799999999",
             telefono="0999999999",
             tipo_perfil=models.PerfilEnum.ADMINISTRADOR

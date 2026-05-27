@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
+import os
 import jwt
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
@@ -8,7 +9,8 @@ from sqlalchemy.orm import Session
 from database import get_db
 import models
 
-SECRET_KEY = "tu_super_secreto_aqui_cambiar_en_produccion"
+# TODO [PRE-PRODUCCIÓN]: Eliminar este fallback y forzar lectura exclusiva desde .env
+SECRET_KEY = os.environ.get("SECRET_KEY", "tu_super_secreto_aqui_cambiar_en_produccion")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 días
 
