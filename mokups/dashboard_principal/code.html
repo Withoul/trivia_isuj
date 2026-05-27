@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QuizGame ISUTJ - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#594400",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#2b0052",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "outline-variant": "#cdc3d1",
+                        "outline": "#7c7481",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-fixed": "#251a00",
+                        "tertiary": "#002517",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#003d28",
+                        "inverse-surface": "#213145",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "secondary": "#765b00",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#dbb8ff",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#4b4450",
+                        "background": "#f8f9ff",
+                        "surface-admin": "#F8FAFC",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-container": "#00b37c",
+                        "surface-container-high": "#dce9ff",
+                        "on-secondary-container": "#6e5400",
+                        "surface-tint": "#734c9e",
+                        "surface-container-low": "#eff4ff",
+                        "surface": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "secondary-container": "#ffc70a",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#002113",
+                        "on-surface": "#0b1c30",
+                        "on-primary-container": "#b48be2",
+                        "on-background": "#0b1c30",
+                        "secondary-fixed-dim": "#f5bf00",
+                        "background-dark": "#1A0B2E",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "primary-fixed": "#efdbff",
+                        "glass-fill": "rgba(255, 255, 255, 0.08)",
+                        "secondary-fixed": "#ffdf95",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#461f70",
+                        "surface-variant": "#d3e4fe",
+                        "primary": "#30015a",
+                        "streak-orange": "#F97316",
+                        "tertiary-fixed": "#6ffbbe",
+                        "primary-fixed-dim": "#dbb8ff",
+                        "on-primary-fixed-variant": "#5a3484"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "container-margin": "20px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "score-display": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "score-display": ["24px", { "lineHeight": "32px", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .glass-card-vibrant {
+            background: linear-gradient(135deg, theme('colors.primary-container') 0%, theme('colors.primary') 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 15px -3px rgba(48, 1, 90, 0.2), 0 4px 6px -2px rgba(48, 1, 90, 0.1);
+        }
+        .progress-gradient {
+            background: linear-gradient(90deg, theme('colors.secondary-container') 0%, theme('colors.tertiary-fixed-dim') 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full h-16 z-50 shadow-sm border-b border-outline-variant/20 bg-background dark:bg-background-dark flex items-center justify-between px-container-margin transition-transform active:scale-95">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[28px]" data-icon="school">school</span>
+<h1 class="font-display-lg text-title-md text-primary dark:text-primary-fixed-dim tracking-tight">QuizGame ISUTJ</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs bg-surface-container-high px-3 py-1 rounded-full">
+<span class="font-label-md text-label-md text-streak-orange">5</span>
+<span class="material-symbols-outlined text-streak-orange text-[18px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div class="flex items-center gap-xs bg-surface-container-high px-3 py-1 rounded-full cursor-pointer hover:opacity-80">
+<span class="font-label-md text-label-md text-primary">1,250</span>
+<span>💎</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 px-container-margin max-w-lg mx-auto flex flex-col gap-md">
+<!-- Progress/Level Section -->
+<section class="glass-card rounded-xl p-md mt-sm">
+<div class="flex justify-between items-center mb-sm">
+<div>
+<h2 class="font-title-md text-title-md text-on-surface">Level 12</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Novice Scholar</p>
+</div>
+<div class="text-right">
+<span class="font-score-display text-score-display text-primary">850</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">/ 1000 XP</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-3 overflow-hidden">
+<div class="progress-gradient h-3 rounded-full" style="width: 85%"></div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-xs mt-2 text-right">150 XP to Next Level</p>
+</section>
+<!-- Daily Challenge -->
+<section class="glass-card-vibrant rounded-xl p-md text-on-primary relative overflow-hidden group cursor-pointer active:scale-98 transition-transform">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-sm mb-2">
+<span class="material-symbols-outlined text-[20px] text-secondary-container" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label-md text-label-md text-secondary-container uppercase tracking-wider">Daily Challenge</span>
+</div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile mb-1">Historia de México</h3>
+<p class="font-body-md text-body-md text-on-primary/80 mb-4">Beat the clock to earn double XP!</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-xs text-sm">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>05:00</span>
+</div>
+<button class="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-4 py-2 rounded-full shadow-md hover:bg-secondary-fixed transition-colors">Play Now</button>
+</div>
+</div>
+</section>
+<!-- Featured Categories (Bento Grid) -->
+<section class="mt-sm">
+<h2 class="font-title-md text-title-md text-on-surface mb-md">Quizzes Destacados</h2>
+<div class="grid grid-cols-2 gap-sm">
+<!-- Tecnología -->
+<div class="glass-card rounded-xl p-md flex flex-col justify-between aspect-square cursor-pointer hover:border-primary/50 transition-colors active:scale-95">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center mb-auto">
+<span class="material-symbols-outlined text-primary text-[24px]">devices</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Tecnología</h3>
+<p class="font-body-md text-body-md text-xs text-on-surface-variant">12 Quizzes</p>
+</div>
+</div>
+<!-- Cultura General -->
+<div class="glass-card rounded-xl p-md flex flex-col justify-between aspect-square cursor-pointer hover:border-primary/50 transition-colors active:scale-95 bg-gradient-to-br from-surface to-inverse-on-surface">
+<div class="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center mb-auto shadow-sm">
+<span class="material-symbols-outlined text-tertiary-container text-[24px]">public</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Cultura General</h3>
+<p class="font-body-md text-body-md text-xs text-on-surface-variant">45 Quizzes</p>
+</div>
+</div>
+<!-- Lógica (Full width spanning) -->
+<div class="col-span-2 glass-card rounded-xl p-md flex items-center justify-between cursor-pointer hover:border-primary/50 transition-colors active:scale-95">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[28px]">extension</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Lógica y Matemáticas</h3>
+<p class="font-body-md text-body-md text-xs text-on-surface-variant">Desafía tu mente</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full h-16 z-50 rounded-t-xl bg-glass-fill backdrop-blur-md shadow-lg border-t border-white/10 md:hidden flex justify-around items-center px-4">
+<!-- Active Tab: Quizzes -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-secondary-container rounded-xl px-4 py-1 shadow-[0_0_15px_rgba(70,31,112,0.4)] transition-all duration-300 active:scale-90 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="quiz" style="font-variation-settings: 'FILL' 1;">quiz</span>
+<span class="text-[10px] mt-1">Quizzes</span>
+</a>
+<!-- Inactive Tab: Rankings -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-secondary transition-all duration-300 active:scale-90 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="leaderboard">leaderboard</span>
+<span class="text-[10px] mt-1">Rankings</span>
+</a>
+<!-- Inactive Tab: Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-secondary transition-all duration-300 active:scale-90 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="person">person</span>
+<span class="text-[10px] mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

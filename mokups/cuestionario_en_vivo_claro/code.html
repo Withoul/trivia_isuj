@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QuizGame ISUTJ - Active Quiz</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#594400",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed": "#2b0052",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "outline-variant": "#cdc3d1",
+                      "outline": "#7c7481",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-secondary-fixed": "#251a00",
+                      "tertiary": "#002517",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "tertiary-container": "#003d28",
+                      "inverse-surface": "#213145",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "secondary": "#765b00",
+                      "on-primary": "#ffffff",
+                      "inverse-primary": "#dbb8ff",
+                      "on-error": "#ffffff",
+                      "on-surface-variant": "#4b4450",
+                      "background": "#f8f9ff",
+                      "surface-admin": "#F8FAFC",
+                      "surface-dim": "#cbdbf5",
+                      "on-tertiary-container": "#00b37c",
+                      "surface-container-high": "#dce9ff",
+                      "on-secondary-container": "#6e5400",
+                      "surface-tint": "#734c9e",
+                      "surface-container-low": "#eff4ff",
+                      "surface": "#ffffff",
+                      "surface-container": "#e5eeff",
+                      "secondary-container": "#ffc70a",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed": "#002113",
+                      "on-surface": "#0b1c30",
+                      "on-primary-container": "#b48be2",
+                      "on-background": "#0b1c30",
+                      "secondary-fixed-dim": "#f5bf00",
+                      "background-dark": "#1A0B2E",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "primary-fixed": "#efdbff",
+                      "glass-fill": "rgba(255, 255, 255, 0.08)",
+                      "secondary-fixed": "#ffdf95",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#461f70",
+                      "surface-variant": "#d3e4fe",
+                      "primary": "#30015a",
+                      "streak-orange": "#F97316",
+                      "tertiary-fixed": "#6ffbbe",
+                      "primary-fixed-dim": "#dbb8ff",
+                      "on-primary-fixed-variant": "#5a3484"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "md": "16px",
+                      "xs": "4px",
+                      "gutter": "16px",
+                      "container-margin": "20px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "lg": "24px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "title-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "score-display": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "score-display": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "800"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Simulating the glowing pulse for timer */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(70, 31, 112, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(255, 199, 10, 0.8); }
+        }
+        .timer-glow {
+            animation: pulse-glow 2s infinite;
+        }
+
+        /* Floating points animation simulation */
+        @keyframes float-up {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-40px) scale(1.2); }
+        }
+        .float-animation {
+            animation: float-up 1.5s ease-out forwards;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface min-h-screen font-body-md text-on-surface antialiased overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full h-16 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-outline-variant flex items-center justify-between px-container-margin w-full">
+<div class="flex items-center gap-2 text-primary-container hover:opacity-80 transition-transform active:scale-95 cursor-pointer">
+<span class="material-symbols-outlined text-[28px]" data-icon="school">school</span>
+<span class="font-display-lg text-title-md tracking-tight">QuizGame ISUTJ</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant text-on-surface hover:opacity-80 transition-transform active:scale-95 cursor-pointer">
+<span class="font-label-md text-label-md font-bold">1,250</span>
+<span class="text-lg">💎</span>
+</div>
+</header>
+<!-- Main Content Area - Active Quiz -->
+<main class="pt-[88px] pb-32 px-container-margin max-w-lg mx-auto w-full flex flex-col gap-6 relative">
+<!-- Floating +50 Indicator (Simulated visual feedback) -->
+<div class="absolute right-8 top-24 z-10 font-score-display text-score-display text-secondary-container drop-shadow-[0_0_10px_rgba(255,199,10,0.8)] float-animation pointer-events-none">
+            +50
+        </div>
+<!-- Top Status Bar (Timer & Streak) -->
+<div class="flex justify-between items-center w-full">
+<!-- Streak Indicator -->
+<div class="flex items-center gap-1.5 bg-surface-container-low border border-outline-variant rounded-full px-4 py-1.5 backdrop-blur-md">
+<span class="material-symbols-outlined text-streak-orange fill text-[20px]">local_fire_department</span>
+<span class="font-label-md text-label-md text-on-surface font-bold tracking-wider">Racha x5</span>
+</div>
+<!-- Timer Indicator -->
+<div class="w-14 h-14 rounded-full bg-white border-2 border-secondary-container flex items-center justify-center timer-glow text-primary-container font-score-display text-score-display font-black">
+                12
+            </div>
+</div>
+<!-- Question Area -->
+<div class="mt-4 mb-2">
+<div class="inline-block px-3 py-1 bg-primary-container/10 text-primary-container rounded-md font-label-md text-label-md mb-3 text-sm border border-primary-container/20">
+                Pregunta 4 / 10
+            </div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-extrabold leading-tight text-center md:text-left drop-shadow-sm">
+                ¿Cuál es el lenguaje de programación principal para desarrollo Android nativo?
+            </h1>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden mb-2 relative">
+<!-- Simulated gradient living progress -->
+<div class="absolute top-0 left-0 h-full w-[40%] bg-gradient-to-r from-[#ffc708] to-[#4edea3] rounded-full shadow-[0_0_10px_rgba(70,31,112,0.3)]"></div>
+</div>
+<!-- Options Grid -->
+<div class="grid grid-cols-1 gap-4 mt-2">
+<!-- Option 1 (Default Glass State) -->
+<button class="w-full min-h-[72px] bg-white border border-outline-variant rounded-xl px-5 py-4 flex items-center justify-between text-left hover:bg-surface-container-low transition-all duration-200 active:scale-95 group shadow-sm">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary-container transition-colors">Swift</span>
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center text-on-surface-variant group-hover:border-primary-container transition-colors">
+<span class="font-label-md text-label-md font-bold">A</span>
+</div>
+</button>
+<!-- Option 2 (Selected/Active State with Glow) -->
+<button class="w-full min-h-[72px] bg-primary-container/10 border-2 border-primary-container rounded-xl px-5 py-4 flex items-center justify-between text-left shadow-[0_0_15px_rgba(70,31,112,0.2)] transform scale-[1.02] transition-all duration-200">
+<span class="font-title-md text-title-md text-primary-container font-bold">Kotlin</span>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-white">
+<span class="font-label-md text-label-md font-bold">B</span>
+</div>
+</button>
+<!-- Option 3 (Default Glass State) -->
+<button class="w-full min-h-[72px] bg-white border border-outline-variant rounded-xl px-5 py-4 flex items-center justify-between text-left hover:bg-surface-container-low transition-all duration-200 active:scale-95 group shadow-sm">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary-container transition-colors">JavaScript</span>
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center text-on-surface-variant group-hover:border-primary-container transition-colors">
+<span class="font-label-md text-label-md font-bold">C</span>
+</div>
+</button>
+<!-- Option 4 (Default Glass State) -->
+<button class="w-full min-h-[72px] bg-white border border-outline-variant rounded-xl px-5 py-4 flex items-center justify-between text-left hover:bg-surface-container-low transition-all duration-200 active:scale-95 group shadow-sm">
+<span class="font-title-md text-title-md text-on-surface group-hover:text-primary-container transition-colors">C#</span>
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center text-on-surface-variant group-hover:border-primary-container transition-colors">
+<span class="font-label-md text-label-md font-bold">D</span>
+</div>
+</button>
+</div>
+</main>
+<!-- Navigation excluded because this is a focused, transactional "Active Quiz" task flow -->
+</body></html>
