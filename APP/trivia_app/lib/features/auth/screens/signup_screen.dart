@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../data/services/api_service.dart';
+import '../../../core/widgets/app_brand_title.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -75,7 +76,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     final numRegExp = RegExp(r'^\d+$');
     if (phone.length != 10 || !numRegExp.hasMatch(phone)) {
-      _showWarning('El Teléfono debe contener exactamente 10 dígitos numéricos');
+      _showWarning(
+        'El Teléfono debe contener exactamente 10 dígitos numéricos',
+      );
       return;
     }
 
@@ -115,7 +118,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     final nameParts = _nameCtrl.text.trim().split(' ');
     final firstName = nameParts[0];
-    final lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : 'Usuario';
+    final lastName = nameParts.length > 1
+        ? nameParts.sublist(1).join(' ')
+        : 'Usuario';
 
     final success = await _api.register(
       email,
@@ -133,7 +138,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Cuenta registrada y activada correctamente. Ya puedes iniciar sesión.'),
+            content: Text(
+              'Cuenta registrada y activada correctamente. Ya puedes iniciar sesión.',
+            ),
             backgroundColor: AppColors.primaryContainer,
           ),
         );
@@ -141,17 +148,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     } else {
       if (mounted) {
-        _showWarning('Error al registrar la cuenta. El correo o cédula podrían estar ya registrados.');
+        _showWarning(
+          'Error al registrar la cuenta. El correo o cédula podrían estar ya registrados.',
+        );
       }
     }
   }
 
   void _showWarning(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
-        backgroundColor: AppColors.error,
-      ),
+      SnackBar(content: Text(msg), backgroundColor: AppColors.error),
     );
   }
 
@@ -160,18 +166,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Row(
-          children: [
-            const Icon(Icons.school, color: AppColors.primaryContainer),
-            const SizedBox(width: 8),
-            Text(
-              'QuizGame ISUTJ',
-              style: AppTextStyles.titleMd(color: AppColors.primaryContainer).copyWith(fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
+        title: const AppBrandTitle(),
         backgroundColor: Colors.white,
         elevation: 0,
+        centerTitle: true,
         iconTheme: const IconThemeData(color: AppColors.primaryContainer),
       ),
       body: Stack(
@@ -214,7 +212,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                  vertical: 16.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -223,21 +224,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildStepIndicator(1, 'Datos Personales', _currentStep >= 1),
+                        _buildStepIndicator(
+                          1,
+                          'Datos Personales',
+                          _currentStep >= 1,
+                        ),
                         Container(
                           width: 40,
                           height: 3,
-                          color: _currentStep >= 2 ? AppColors.primaryContainer : Colors.grey.shade300,
+                          color: _currentStep >= 2
+                              ? AppColors.primaryContainer
+                              : Colors.grey.shade300,
                         ),
                         _buildStepIndicator(2, 'Cuenta', _currentStep >= 2),
                       ],
                     ),
                     const SizedBox(height: 30),
                     Text(
-                      _currentStep == 1 ? 'Comienza tu camino al éxito' : 'Crea tus credenciales',
-                      style: AppTextStyles.headlineLgMobile(color: AppColors.onSurface).copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                      _currentStep == 1
+                          ? 'Comienza tu camino al éxito'
+                          : 'Crea tus credenciales',
+                      style: AppTextStyles.headlineLgMobile(
+                        color: AppColors.onSurface,
+                      ).copyWith(fontWeight: FontWeight.w800),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
@@ -245,7 +254,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _currentStep == 1
                           ? 'Paso 1: Completa tu información personal y académica'
                           : 'Paso 2: Define tu usuario y contraseña de juego',
-                      style: AppTextStyles.bodySm(color: AppColors.onSurfaceVariant),
+                      style: AppTextStyles.bodySm(
+                        color: AppColors.onSurfaceVariant,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 24),
@@ -267,7 +278,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: AppColors.outlineVariant.withOpacity(0.5),
                         ),
                       ),
-                      child: _currentStep == 1 ? _buildStep1Form() : _buildStep2Form(),
+                      child: _currentStep == 1
+                          ? _buildStep1Form()
+                          : _buildStep2Form(),
                     ),
                     const SizedBox(height: 30),
 
@@ -281,10 +294,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: OutlinedButton(
                               onPressed: () => setState(() => _currentStep = 1),
                               style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: AppColors.primaryContainer),
+                                side: const BorderSide(
+                                  color: AppColors.primaryContainer,
+                                ),
                                 padding: EdgeInsets.zero,
                               ),
-                              child: const Icon(Icons.arrow_back, color: AppColors.primaryContainer),
+                              child: const Icon(
+                                Icons.arrow_back,
+                                color: AppColors.primaryContainer,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 16),
@@ -301,16 +319,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 foregroundColor: Colors.white,
                               ),
                               child: _isLoading
-                                  ? const CircularProgressIndicator(color: Colors.white)
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
                                   : Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          _currentStep == 1 ? 'Siguiente ' : 'Registrarse ',
-                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                                          _currentStep == 1
+                                              ? 'Siguiente '
+                                              : 'Registrarse ',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                         Icon(
-                                          _currentStep == 1 ? Icons.arrow_forward : Icons.check_circle_outline,
+                                          _currentStep == 1
+                                              ? Icons.arrow_forward
+                                              : Icons.check_circle_outline,
                                           size: 18,
                                           color: Colors.white,
                                         ),
@@ -361,7 +390,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             color: isActive ? AppColors.primaryContainer : Colors.white,
             shape: BoxShape.circle,
             border: Border.all(
-              color: isActive ? AppColors.primaryContainer : Colors.grey.shade300,
+              color: isActive
+                  ? AppColors.primaryContainer
+                  : Colors.grey.shade300,
               width: 2,
             ),
           ),
@@ -382,7 +413,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
             color: isActive ? AppColors.primary : Colors.grey,
           ),
-        )
+        ),
       ],
     );
   }
@@ -393,7 +424,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       children: [
         const Text(
           'Nombre Completo',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurface, fontSize: 14),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.onSurface,
+            fontSize: 14,
+          ),
         ),
         const SizedBox(height: 8),
         TextField(
@@ -407,7 +442,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         const SizedBox(height: 20),
         const Text(
           'Número de Cédula (10 dígitos)',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurface, fontSize: 14),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.onSurface,
+            fontSize: 14,
+          ),
         ),
         const SizedBox(height: 8),
         TextField(
@@ -416,14 +455,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
           maxLength: 10,
           decoration: const InputDecoration(
             hintText: 'Ej. 1712345678',
-            prefixIcon: Icon(Icons.credit_card_outlined, color: AppColors.outline),
+            prefixIcon: Icon(
+              Icons.credit_card_outlined,
+              color: AppColors.outline,
+            ),
             counterText: '',
           ),
         ),
         const SizedBox(height: 20),
         const Text(
           'Instituto de procedencia (Escuela/Colegio)',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurface, fontSize: 14),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.onSurface,
+            fontSize: 14,
+          ),
         ),
         const SizedBox(height: 8),
         TextField(
@@ -431,13 +477,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
           keyboardType: TextInputType.text,
           decoration: const InputDecoration(
             hintText: 'Ej. Colegio Técnico Japón',
-            prefixIcon: Icon(Icons.account_balance_outlined, color: AppColors.outline),
+            prefixIcon: Icon(
+              Icons.account_balance_outlined,
+              color: AppColors.outline,
+            ),
           ),
         ),
         const SizedBox(height: 20),
         const Text(
           'Teléfono Celular (10 dígitos)',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurface, fontSize: 14),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.onSurface,
+            fontSize: 14,
+          ),
         ),
         const SizedBox(height: 8),
         TextField(
@@ -446,7 +499,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           maxLength: 10,
           decoration: const InputDecoration(
             hintText: 'Ej. 0987654321',
-            prefixIcon: Icon(Icons.phone_android_outlined, color: AppColors.outline),
+            prefixIcon: Icon(
+              Icons.phone_android_outlined,
+              color: AppColors.outline,
+            ),
             counterText: '',
           ),
         ),
@@ -460,7 +516,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       children: [
         const Text(
           'Correo Electrónico',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurface, fontSize: 14),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.onSurface,
+            fontSize: 14,
+          ),
         ),
         const SizedBox(height: 8),
         TextField(
@@ -474,7 +534,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         const SizedBox(height: 20),
         const Text(
           'Contraseña de Juego',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurface, fontSize: 14),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.onSurface,
+            fontSize: 14,
+          ),
         ),
         const SizedBox(height: 8),
         TextField(
@@ -488,7 +552,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         const SizedBox(height: 20),
         const Text(
           'Confirmar Contraseña',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.onSurface, fontSize: 14),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.onSurface,
+            fontSize: 14,
+          ),
         ),
         const SizedBox(height: 8),
         TextField(

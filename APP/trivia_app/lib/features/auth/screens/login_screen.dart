@@ -4,7 +4,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../data/providers/auth_provider.dart';
 import '../../../data/services/database_helper.dart';
-import '../widgets/logo_header.dart';
+import '../../../core/widgets/institution_logo.dart';
 import 'signup_screen.dart';
 
 class PressableScaleButton extends StatefulWidget {
@@ -175,7 +175,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(height: 20),
-                      const LogoHeader(),
+                      const InstitutionLogo(),
                       const SizedBox(height: 32),
 
                       // Form Card Container
@@ -219,7 +219,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                             // Email input
                             const Text(
-                              'Correo Institucional',
+                              'Correo',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.onSurface,
@@ -551,9 +551,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             child: const Text(
                               'Activa tu cuenta',
                               style: TextStyle(
-                                color: AppColors.secondaryContainer,
+                                color: AppColors.secondary,
                                 fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
                               ),
                             ),
                           ),
