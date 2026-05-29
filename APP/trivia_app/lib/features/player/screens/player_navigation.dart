@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/widgets/app_brand_title.dart';
+import '../../../core/widgets/moneda_icon.dart';
 import '../../../data/providers/profile_provider.dart';
 import 'dashboard_tab.dart';
 import 'rankings_tab.dart';
@@ -35,36 +37,33 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                const Icon(Icons.school, color: AppColors.primaryContainer),
-                const SizedBox(width: 6),
-                Text(
-                  'QuizGame ISUTJ',
-                  style: AppTextStyles.titleMd(color: AppColors.primaryContainer).copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            
+            const AppBrandTitle(),
+
             // Dynamic Gem/Points Pill based on actual User Profile
             profileAsync.when(
               data: (user) {
                 final score = user?.puntajeTotal ?? 0;
-                final formattedScore = NumberFormat.decimalPattern().format(score);
+                final formattedScore = NumberFormat.decimalPattern().format(
+                  score,
+                );
                 return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFF9E6),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: AppColors.secondaryContainer, width: 1.5),
+                    border: Border.all(
+                      color: AppColors.secondaryContainer,
+                      width: 1.5,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.secondaryContainer.withOpacity(0.15),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
-                      )
+                      ),
                     ],
                   ),
                   child: Row(
@@ -72,34 +71,49 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
                     children: [
                       Text(
                         '$formattedScore ',
-                        style: AppTextStyles.scoreDisplay(color: AppColors.onSecondaryContainer).copyWith(
-                          fontSize: 13,
-                        ),
+                        style: AppTextStyles.scoreDisplay(
+                          color: AppColors.onSecondaryContainer,
+                        ).copyWith(fontSize: 15),
                       ),
-                      const Icon(Icons.diamond, color: Colors.cyan, size: 16),
+                      const MonedaIcon(size: 26),
                     ],
                   ),
                 );
               },
               loading: () => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(25),
                 ),
                 child: const SizedBox(
                   width: 14,
                   height: 14,
-                  child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
               error: (_, __) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.errorContainer,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text('!', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                child: const Text(
+                  '!',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],
@@ -125,12 +139,12 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
               ),
             ),
           ),
-          
+
           // Current Active Tab
           _tabs[_currentIndex],
         ],
       ),
-      
+
       // Frosted Glass Bottom Navigation Bar matching DESIGN.md
       bottomNavigationBar: ClipRect(
         child: BackdropFilter(
@@ -175,7 +189,7 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
                     color: AppColors.primaryContainer.withOpacity(0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
-                  )
+                  ),
                 ]
               : null,
         ),
@@ -183,7 +197,7 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              isSelected && index == 1 ? Icons.emoji_events : icon, 
+              isSelected && index == 1 ? Icons.emoji_events : icon,
               color: isSelected
                   ? (index == 1 ? AppColors.secondaryContainer : Colors.white)
                   : AppColors.onSurfaceVariant.withOpacity(0.7),
@@ -199,7 +213,7 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
                   letterSpacing: 0,
                 ),
               ),
-            ]
+            ],
           ],
         ),
       ),

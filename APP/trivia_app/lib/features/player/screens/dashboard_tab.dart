@@ -115,7 +115,7 @@ class _DashboardTabState extends ConsumerState<DashboardTab> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'Institución: ${user?.institucion ?? "Ingeniería"}',
+                        'Institución: ${user?.institucion ?? "ISUJ"}',
                         style: AppTextStyles.bodySm(color: Colors.white70),
                       ),
                       const SizedBox(height: 12),
