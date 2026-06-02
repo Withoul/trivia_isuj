@@ -49,6 +49,10 @@ class ApiService {
       tiempoInicio: DateTime.now().subtract(const Duration(days: 1)),
       tiempoFin: DateTime.now().add(const Duration(hours: 3, minutes: 45)),
       creadoEn: DateTime.now().subtract(const Duration(days: 2)),
+      tiempoPorPregunta: 15,
+      colorBanner: '#461F70',
+      puntosPorPregunta: 10,
+      esPermanente: false,
     ),
     QuizBankModel(
       id: 102,
@@ -57,14 +61,22 @@ class ApiService {
       tiempoInicio: DateTime.now().subtract(const Duration(days: 2)),
       tiempoFin: DateTime.now().add(const Duration(days: 2)),
       creadoEn: DateTime.now().subtract(const Duration(days: 3)),
+      tiempoPorPregunta: 20,
+      colorBanner: '#0D9488',
+      puntosPorPregunta: 5,
+      esPermanente: false,
     ),
     QuizBankModel(
       id: 103,
       titulo: 'Base de Datos Relacionales (Demo)',
       isActive: true,
-      tiempoInicio: DateTime.now().subtract(const Duration(days: 5)),
-      tiempoFin: DateTime.now().add(const Duration(days: 5)),
+      tiempoInicio: null,
+      tiempoFin: null,
       creadoEn: DateTime.now().subtract(const Duration(days: 6)),
+      tiempoPorPregunta: 12,
+      colorBanner: '#DC2626',
+      puntosPorPregunta: 8,
+      esPermanente: true,
     ),
   ];
 
@@ -496,16 +508,24 @@ class ApiService {
     String titulo,
     bool isActive,
     DateTime? tiempoInicio,
-    DateTime? tiempoFin,
-  ) async {
+    DateTime? tiempoFin, {
+    int tiempoPorPregunta = 12,
+    String colorBanner = '#461F70',
+    int puntosPorPregunta = 5,
+    bool esPermanente = false,
+  }) async {
     if (await _isDemo()) {
       final newBank = QuizBankModel(
-        id: _mockBanks.length + 101,
+        id: _mockBanks.length + 104,
         titulo: titulo,
         isActive: isActive,
-        tiempoInicio: tiempoInicio ?? DateTime.now(),
-        tiempoFin: tiempoFin ?? DateTime.now().add(const Duration(days: 7)),
+        tiempoInicio: esPermanente ? null : (tiempoInicio ?? DateTime.now()),
+        tiempoFin: esPermanente ? null : (tiempoFin ?? DateTime.now().add(const Duration(days: 7))),
         creadoEn: DateTime.now(),
+        tiempoPorPregunta: tiempoPorPregunta,
+        colorBanner: colorBanner,
+        puntosPorPregunta: puntosPorPregunta,
+        esPermanente: esPermanente,
       );
       _mockBanks.add(newBank);
       _mockQuestions[newBank.id] = [];
@@ -527,6 +547,10 @@ class ApiService {
           'is_active': isActive,
           'tiempo_inicio': tiempoInicio?.toIso8601String(),
           'tiempo_fin': tiempoFin?.toIso8601String(),
+          'tiempo_por_pregunta': tiempoPorPregunta,
+          'color_banner': colorBanner,
+          'puntos_por_pregunta': puntosPorPregunta,
+          'es_permanente': esPermanente,
         }),
       );
 
@@ -545,8 +569,12 @@ class ApiService {
     String titulo,
     bool isActive,
     DateTime? tiempoInicio,
-    DateTime? tiempoFin,
-  ) async {
+    DateTime? tiempoFin, {
+    int tiempoPorPregunta = 12,
+    String colorBanner = '#461F70',
+    int puntosPorPregunta = 5,
+    bool esPermanente = false,
+  }) async {
     if (await _isDemo()) {
       final index = _mockBanks.indexWhere((b) => b.id == bankId);
       if (index != -1) {
@@ -554,9 +582,13 @@ class ApiService {
           id: bankId,
           titulo: titulo,
           isActive: isActive,
-          tiempoInicio: tiempoInicio ?? _mockBanks[index].tiempoInicio,
-          tiempoFin: tiempoFin ?? _mockBanks[index].tiempoFin,
+          tiempoInicio: esPermanente ? null : (tiempoInicio ?? _mockBanks[index].tiempoInicio),
+          tiempoFin: esPermanente ? null : (tiempoFin ?? _mockBanks[index].tiempoFin),
           creadoEn: _mockBanks[index].creadoEn,
+          tiempoPorPregunta: tiempoPorPregunta,
+          colorBanner: colorBanner,
+          puntosPorPregunta: puntosPorPregunta,
+          esPermanente: esPermanente,
         );
         _mockBanks[index] = updated;
         return updated;
@@ -579,6 +611,10 @@ class ApiService {
           'is_active': isActive,
           'tiempo_inicio': tiempoInicio?.toIso8601String(),
           'tiempo_fin': tiempoFin?.toIso8601String(),
+          'tiempo_por_pregunta': tiempoPorPregunta,
+          'color_banner': colorBanner,
+          'puntos_por_pregunta': puntosPorPregunta,
+          'es_permanente': esPermanente,
         }),
       );
 
@@ -612,7 +648,7 @@ class ApiService {
         );
       }
       final newQuestion = QuestionModel(
-        id: (_mockQuestions[bankId]?.length ?? 0) + 1,
+        id: (_mockQuestions[bankId]?.length ?? 0) + 100,
         textoPregunta: textoPregunta,
         respuestas: parsedAnswers,
       );
@@ -646,6 +682,91 @@ class ApiService {
       }
     } catch (e) {
       print('Admin create question error: $e');
+    }
+    return null;
+  }
+
+  // --- DELETE QUESTION ---
+  Future<bool> deleteQuestion(int bankId, int questionId) async {
+    if (await _isDemo()) {
+      if (_mockQuestions.containsKey(bankId)) {
+        _mockQuestions[bankId]!.removeWhere((q) => q.id == questionId);
+        return true;
+      }
+      return false;
+    }
+
+    try {
+      final token = await _getToken();
+      if (token == null) return false;
+
+      final response = await http.delete(
+        Uri.parse('$baseUrl/admin/banks/$bankId/questions/$questionId'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Admin delete question error: $e');
+      return false;
+    }
+  }
+
+  // --- UPDATE QUESTION ---
+  Future<QuestionModel?> updateQuestion(
+    int bankId,
+    int questionId,
+    String textoPregunta,
+    List<Map<String, dynamic>> respuestas,
+  ) async {
+    if (await _isDemo()) {
+      if (_mockQuestions.containsKey(bankId)) {
+        final index = _mockQuestions[bankId]!.indexWhere((q) => q.id == questionId);
+        if (index != -1) {
+          final List<AnswerModel> parsedAnswers = [];
+          for (int i = 0; i < respuestas.length; i++) {
+            parsedAnswers.add(
+              AnswerModel(
+                id: i + 1,
+                textoRespuesta: respuestas[i]['texto_respuesta'] ?? '',
+                esCorrecta: respuestas[i]['es_correcta'] ?? false,
+              ),
+            );
+          }
+          final updated = QuestionModel(
+            id: questionId,
+            textoPregunta: textoPregunta,
+            respuestas: parsedAnswers,
+          );
+          _mockQuestions[bankId]![index] = updated;
+          return updated;
+        }
+      }
+      return null;
+    }
+
+    try {
+      final token = await _getToken();
+      if (token == null) return null;
+
+      final response = await http.put(
+        Uri.parse('$baseUrl/admin/banks/$bankId/questions/$questionId'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'texto_pregunta': textoPregunta,
+          'respuestas': respuestas,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return QuestionModel.fromJson(data);
+      }
+    } catch (e) {
+      print('Admin update question error: $e');
     }
     return null;
   }

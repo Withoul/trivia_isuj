@@ -65,6 +65,10 @@ class BancoPreguntasBase(BaseModel):
     is_active: bool = False
     tiempo_inicio: Optional[datetime] = None
     tiempo_fin: Optional[datetime] = None
+    tiempo_por_pregunta: int = 12
+    color_banner: str = '#461F70'
+    puntos_por_pregunta: int = 5
+    es_permanente: bool = False
 
 class BancoPreguntasCreate(BancoPreguntasBase):
     pass
@@ -74,6 +78,10 @@ class BancoPreguntasResponse(BancoPreguntasBase):
     creado_en: datetime
     class Config:
         from_attributes = True
+
+# --- UPDATE PREGUNTA ---
+class PreguntaUpdate(PreguntaBase):
+    respuestas: List[RespuestaCreate]
 
 # --- PUNTAJE ---
 class ScoreSubmit(BaseModel):

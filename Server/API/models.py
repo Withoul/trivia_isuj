@@ -48,6 +48,12 @@ class BancoPreguntas(Base):
     tiempo_fin = Column(DateTime)
     creado_en = Column(DateTime, default=datetime.utcnow)
 
+    # New configuration fields
+    tiempo_por_pregunta = Column(Integer, default=12)       # seconds per question
+    color_banner = Column(String(20), default='#461F70')    # hex color for banner
+    puntos_por_pregunta = Column(Integer, default=5)        # base points per correct answer
+    es_permanente = Column(Boolean, default=False)          # permanent vs temporal
+
     preguntas = relationship("Pregunta", back_populates="banco")
     puntajes = relationship("Puntaje", back_populates="banco")
 

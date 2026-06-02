@@ -291,7 +291,50 @@ def update_bank(bank_id: int, bank_update: schemas.BancoPreguntasCreate, db: Ses
     bank.is_active = bank_update.is_active
     bank.tiempo_inicio = bank_update.tiempo_inicio
     bank.tiempo_fin = bank_update.tiempo_fin
+    bank.tiempo_por_pregunta = bank_update.tiempo_por_pregunta
+    bank.color_banner = bank_update.color_banner
+    bank.puntos_por_pregunta = bank_update.puntos_por_pregunta
+    bank.es_permanente = bank_update.es_permanente
     
     db.commit()
     db.refresh(bank)
     return bank
+
+@app.delete("/admin/banks/{bank_id}/questions/{question_id}")
+def delete_question(bank_id: int, question_id: int, db: Session = Depends(get_db), current_admin: models.Usuario = Depends(auth.get_current_admin)):
+    question = db.query(models.Pregunta).filter(
+        models.Pregunta.id == question_id,
+        models.Pregunta.banco_id == bank_id
+    ).first()
+    if not question:
+        raise HTTPException(status_code=404, detail="Pregunta no encontrada")
+    
+    db.delete(question)
+    db.commit()
+    return {"detail": "Pregunta eliminada correctamente"}
+
+@app.put("/admin/banks/{bank_id}/questions/{question_id}", response_model=schemas.PreguntaResponse)
+def update_question(bank_id: int, question_id: int, pregunta_update: schemas.PreguntaUpdate, db: Session = Depends(get_db), current_admin: models.Usuario = Depends(auth.get_current_admin)):
+    question = db.query(models.Pregunta).filter(
+        models.Pregunta.id == question_id,
+        models.Pregunta.banco_id == bank_id
+    ).first()
+    if not question:
+        raise HTTPException(status_code=404, detail="Pregunta no encontrada")
+    
+    # Update question text
+    question.texto_pregunta = pregunta_update.texto_pregunta
+    
+    # Delete old answers and create new ones
+    db.query(models.Respuesta).filter(models.Respuesta.pregunta_id == question_id).delete()
+    for resp in pregunta_update.respuestas:
+        db_resp = models.Respuesta(
+            pregunta_id=question_id,
+            texto_respuesta=resp.texto_respuesta,
+            es_correcta=resp.es_correcta
+        )
+        db.add(db_resp)
+    
+    db.commit()
+    db.refresh(question)
+    return question
