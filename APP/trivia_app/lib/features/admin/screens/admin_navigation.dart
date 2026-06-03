@@ -4,7 +4,8 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../core/widgets/app_brand_title.dart';
 import 'banks_list_screen.dart';
-import 'bank_form_screen.dart';
+import 'admin_tienda_tab.dart';
+import 'admin_users_tab.dart';
 import 'admin_profile_tab.dart';
 
 class AdminNavigation extends StatefulWidget {
@@ -19,7 +20,8 @@ class _AdminNavigationState extends State<AdminNavigation> {
 
   final List<Widget> _tabs = [
     const BanksListScreen(),
-    const BankFormScreen(),
+    const AdminTiendaTab(),
+    const AdminUsersTab(),
     const AdminProfileTab(),
   ];
 
@@ -109,8 +111,9 @@ class _AdminNavigationState extends State<AdminNavigation> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildNavItem(0, Icons.dashboard_customize_outlined, 'Cuestionarios'),
-                _buildNavItem(1, Icons.add_circle_outline, 'Crear'),
-                _buildNavItem(2, Icons.person_outline, 'Perfil'),
+                _buildNavItem(1, Icons.shopping_bag_outlined, 'Tienda'),
+                _buildNavItem(2, Icons.people_outline, 'Usuarios'),
+                _buildNavItem(3, Icons.person_outline, 'Perfil'),
               ],
             ),
           ),

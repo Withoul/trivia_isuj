@@ -165,22 +165,8 @@ class _BankFormScreenState extends State<BankFormScreen> {
           ),
         );
 
-        if (widget.bankToEdit != null) {
-          // Exited from child edit screen, pop back
-          Navigator.pop(context);
-        } else {
-          // Cleared inputs upon tab creation success
-          setState(() {
-            _titleCtrl.clear();
-            _isActive = true;
-            _startDate = null;
-            _endDate = null;
-            _tiempoPorPregunta = 12;
-            _puntosPorPregunta = 5;
-            _colorBanner = '#461F70';
-            _esPermanente = false;
-          });
-        }
+        // Pushed from BanksListScreen in both modes, so always pop back
+        Navigator.pop(context);
       }
     } else {
       if (mounted) {
@@ -524,19 +510,18 @@ class _BankFormScreenState extends State<BankFormScreen> {
       ),
     );
 
-    if (isEditing) {
-      return Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          title: const Text('Editar Cuestionario', style: TextStyle(fontWeight: FontWeight.bold)),
-          backgroundColor: Colors.white,
-          elevation: 0,
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        title: Text(
+          isEditing ? 'Editar Cuestionario' : 'Crear Cuestionario',
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        body: mainContent,
-      );
-    }
-
-    return mainContent;
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: mainContent,
+    );
   }
 
   Widget _buildSectionHeader(String text) {

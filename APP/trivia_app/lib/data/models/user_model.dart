@@ -13,6 +13,7 @@ class UserModel {
   
   // Dynamic stats parsed from profile endpoint
   final int? puntajeTotal;
+  final int? puntosDisponibles;
   final int? quizzesCompletados;
   final int? rachaMaxima;
 
@@ -29,6 +30,7 @@ class UserModel {
     this.telefono,
     this.creadoEn,
     this.puntajeTotal = 0,
+    this.puntosDisponibles = 0,
     this.quizzesCompletados = 0,
     this.rachaMaxima = 0,
   });
@@ -51,6 +53,7 @@ class UserModel {
           ? DateTime.parse(json['creado_en'] as String) 
           : null,
       puntajeTotal: json['puntaje_total'] as int? ?? 0,
+      puntosDisponibles: json['puntos_disponibles'] as int? ?? (json['puntaje_total'] as int? ?? 0),
       quizzesCompletados: json['quizzes_completados'] as int? ?? 0,
       rachaMaxima: json['racha_maxima'] as int? ?? 0,
     );
@@ -70,6 +73,7 @@ class UserModel {
       'telefono': telefono,
       'creado_en': creadoEn?.toIso8601String(),
       'puntaje_total': puntajeTotal,
+      'puntos_disponibles': puntosDisponibles,
       'quizzes_completados': quizzesCompletados,
       'racha_maxima': rachaMaxima,
     };

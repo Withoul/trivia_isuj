@@ -113,16 +113,45 @@ class _BanksListScreenState extends State<BanksListScreen> {
               const SizedBox(height: 24),
 
               // Section Header
-              const Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.dashboard_customize, color: AppColors.primaryContainer, size: 20),
-                  SizedBox(width: 8),
-                  Text(
-                    'Cuestionarios',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.onSurface,
+                  const Row(
+                    children: [
+                      Icon(Icons.dashboard_customize, color: AppColors.primaryContainer, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Cuestionarios',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const BankFormScreen(),
+                        ),
+                      ).then((_) => _loadBanks());
+                    },
+                    icon: const Icon(Icons.add, size: 16, color: Colors.white),
+                    label: const Text(
+                      'Crear banco de preguntas',
+                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryContainer,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     ),
                   ),
                 ],
@@ -535,18 +564,44 @@ class _BanksListScreenState extends State<BanksListScreen> {
           ),
           const SizedBox(height: 6),
           const Text(
-            'Crea uno nuevo usando la pestaña de creación.',
+            'Crea uno nuevo usando el botón de la parte superior.',
             style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 20),
-          ElevatedButton.icon(
-            onPressed: _loadBanks,
-            icon: const Icon(Icons.refresh),
-            label: const Text('Actualizar'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryContainer,
-              foregroundColor: Colors.white,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                onPressed: _loadBanks,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Actualizar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey.shade200,
+                  foregroundColor: Colors.black87,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const BankFormScreen(),
+                    ),
+                  ).then((_) => _loadBanks());
+                },
+                icon: const Icon(Icons.add),
+                label: const Text('Crear banco'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryContainer,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+            ],
           ),
         ],
       ),
