@@ -60,7 +60,9 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.secondaryContainer.withOpacity(0.15),
+                        color: AppColors.secondaryContainer.withValues(
+                          alpha: 0.15,
+                        ),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),
@@ -98,7 +100,7 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
                   ),
                 ),
               ),
-              error: (_, __) => Container(
+              error: (_, _) => Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 6,
@@ -131,7 +133,7 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
                 gradient: LinearGradient(
                   colors: [
                     Colors.white,
-                    AppColors.primaryContainer.withOpacity(0.02),
+                    AppColors.primaryContainer.withValues(alpha: 0.02),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -152,7 +154,7 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
           child: Container(
             height: 78,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
+              color: Colors.white.withValues(alpha: 0.85),
               border: const Border(
                 top: BorderSide(color: Color(0x1F000000), width: 0.5),
               ),
@@ -186,7 +188,7 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.primaryContainer.withOpacity(0.3),
+                    color: AppColors.primaryContainer.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -200,7 +202,7 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
               isSelected && index == 1 ? Icons.emoji_events : icon,
               color: isSelected
                   ? (index == 1 ? AppColors.secondaryContainer : Colors.white)
-                  : AppColors.onSurfaceVariant.withOpacity(0.7),
+                  : AppColors.onSurfaceVariant.withValues(alpha: 0.7),
               size: 24,
             ),
             if (isSelected) ...[

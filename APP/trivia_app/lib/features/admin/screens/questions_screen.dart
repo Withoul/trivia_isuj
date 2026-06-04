@@ -28,7 +28,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   final _optBCtrl = TextEditingController();
   final _optCCtrl = TextEditingController();
   final _optDCtrl = TextEditingController();
-  
+
   int _correctOptionIndex = 0; // 0 for A, 1 for B, 2 for C, 3 for D
   bool _isSavingQuestion = false;
 
@@ -84,7 +84,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       {'texto_respuesta': d, 'es_correcta': _correctOptionIndex == 3},
     ];
 
-    final result = await _api.createQuestion(widget.bankId, statement, respuestas);
+    final result = await _api.createQuestion(
+      widget.bankId,
+      statement,
+      respuestas,
+    );
 
     setState(() => _isSavingQuestion = false);
 
@@ -96,7 +100,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             backgroundColor: Colors.green,
           ),
         );
-        
+
         // Reset form
         _questionCtrl.clear();
         _optACtrl.clear();
@@ -132,7 +136,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         elevation: 1,
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppColors.primaryContainer))
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primaryContainer,
+              ),
+            )
           : Column(
               children: [
                 // Top section: scrollable list of existing questions
@@ -148,7 +156,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                           },
                         ),
                 ),
-                
+
                 // Bottom section: collapsable/scrollable add question panel
                 _buildAddQuestionPanel(),
               ],
@@ -172,7 +180,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   backgroundColor: AppColors.primaryContainer,
                   child: Text(
                     '$index',
-                    style: const TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -189,7 +201,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               ],
             ),
             const Divider(height: 24, thickness: 0.5),
-            
+
             // List of answer options under the question card
             ...List.generate(question.respuestas.length, (idx) {
               final ans = question.respuestas[idx];
@@ -202,7 +214,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       width: 20,
                       height: 20,
                       decoration: BoxDecoration(
-                        color: ans.esCorrecta ? Colors.green.shade50 : const Color(0xFFF1F5F9),
+                        color: ans.esCorrecta
+                            ? Colors.green.shade50
+                            : const Color(0xFFF1F5F9),
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
@@ -211,7 +225,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: ans.esCorrecta ? Colors.green.shade700 : const Color(0xFF475569),
+                          color: ans.esCorrecta
+                              ? Colors.green.shade700
+                              : const Color(0xFF475569),
                         ),
                       ),
                     ),
@@ -220,14 +236,22 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       child: Text(
                         ans.textoRespuesta,
                         style: TextStyle(
-                          color: ans.esCorrecta ? Colors.green.shade700 : const Color(0xFF334155),
-                          fontWeight: ans.esCorrecta ? FontWeight.bold : FontWeight.normal,
+                          color: ans.esCorrecta
+                              ? Colors.green.shade700
+                              : const Color(0xFF334155),
+                          fontWeight: ans.esCorrecta
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                           fontSize: 13,
                         ),
                       ),
                     ),
                     if (ans.esCorrecta)
-                      const Icon(Icons.check_circle, color: Colors.green, size: 16),
+                      const Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                        size: 16,
+                      ),
                   ],
                 ),
               );
@@ -245,16 +269,20 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         border: Border(top: BorderSide(color: Colors.grey.shade200, width: 1)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -4),
-          )
+          ),
         ],
       ),
       child: ExpansionTile(
         title: const Text(
           '➕ Agregar Nueva Pregunta',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.primaryContainer),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            color: AppColors.primaryContainer,
+          ),
         ),
         childrenPadding: const EdgeInsets.all(16.0),
         children: [
@@ -264,7 +292,10 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Enunciado de la Pregunta', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                  const Text(
+                    'Enunciado de la Pregunta',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
                   const SizedBox(height: 6),
                   TextField(
                     controller: _questionCtrl,
@@ -274,17 +305,20 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
-                  const Text('Alternativas (Marca la opción correcta con el botón lateral)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+
+                  const Text(
+                    'Alternativas (Marca la opción correcta con el botón lateral)',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
                   const SizedBox(height: 10),
-                  
+
                   _buildOptionInputRow(0, 'Alternativa A', _optACtrl),
                   _buildOptionInputRow(1, 'Alternativa B', _optBCtrl),
                   _buildOptionInputRow(2, 'Alternativa C', _optCCtrl),
                   _buildOptionInputRow(3, 'Alternativa D', _optDCtrl),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   SizedBox(
                     width: double.infinity,
                     height: 48,
@@ -296,19 +330,29 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                       ),
                       child: _isSavingQuestion
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text('Guardar Pregunta', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                          : const Text(
+                              'Guardar Pregunta',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                     ),
                   ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildOptionInputRow(int index, String label, TextEditingController ctrl) {
+  Widget _buildOptionInputRow(
+    int index,
+    String label,
+    TextEditingController ctrl,
+  ) {
     final isSelected = _correctOptionIndex == index;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
@@ -329,12 +373,27 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               controller: ctrl,
               decoration: InputDecoration(
                 hintText: label,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 enabledBorder: isSelected
-                    ? OutlineInputBorder(borderSide: const BorderSide(color: Colors.green, width: 1.5), borderRadius: BorderRadius.circular(8))
+                    ? OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Colors.green,
+                          width: 1.5,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      )
                     : null,
                 focusedBorder: isSelected
-                    ? OutlineInputBorder(borderSide: const BorderSide(color: Colors.green, width: 2), borderRadius: BorderRadius.circular(8))
+                    ? OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Colors.green,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      )
                     : null,
               ),
             ),
@@ -353,9 +412,16 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           const SizedBox(height: 12),
           const Text(
             'No hay preguntas creadas',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
           ),
-          const Text('Crea una pregunta en el panel inferior.', style: TextStyle(color: Colors.grey)),
+          const Text(
+            'Crea una pregunta en el panel inferior.',
+            style: TextStyle(color: Colors.grey),
+          ),
         ],
       ),
     );

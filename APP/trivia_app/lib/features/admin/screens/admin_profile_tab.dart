@@ -76,10 +76,14 @@ class AdminProfileTab extends ConsumerWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primaryContainer.withOpacity(0.08),
+                          color: AppColors.primaryContainer.withValues(
+                            alpha: 0.08,
+                          ),
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                            color: AppColors.primaryContainer.withOpacity(0.2),
+                            color: AppColors.primaryContainer.withValues(
+                              alpha: 0.2,
+                            ),
                           ),
                         ),
                         child: const Text(

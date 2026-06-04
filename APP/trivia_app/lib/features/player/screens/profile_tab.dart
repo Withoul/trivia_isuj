@@ -72,8 +72,8 @@ class ProfileTab extends ConsumerWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.secondaryContainer.withOpacity(
-                                0.2,
+                              color: AppColors.secondaryContainer.withValues(
+                                alpha: 0.2,
                               ),
                               blurRadius: 4,
                             ),
@@ -123,11 +123,13 @@ class ProfileTab extends ConsumerWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: AppColors.outlineVariant.withOpacity(0.4),
+                            color: AppColors.outlineVariant.withValues(
+                              alpha: 0.4,
+                            ),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.01),
+                              color: Colors.black.withValues(alpha: 0.01),
                               blurRadius: 6,
                             ),
                           ],
@@ -166,11 +168,13 @@ class ProfileTab extends ConsumerWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: AppColors.outlineVariant.withOpacity(0.4),
+                            color: AppColors.outlineVariant.withValues(
+                              alpha: 0.4,
+                            ),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.01),
+                              color: Colors.black.withValues(alpha: 0.01),
                               blurRadius: 6,
                             ),
                           ],
@@ -214,11 +218,11 @@ class ProfileTab extends ConsumerWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: AppColors.outlineVariant.withOpacity(0.4),
+                      color: AppColors.outlineVariant.withValues(alpha: 0.4),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.01),
+                        color: Colors.black.withValues(alpha: 0.01),
                         blurRadius: 6,
                       ),
                     ],
@@ -348,7 +352,7 @@ class ProfileTab extends ConsumerWidget {
       loading: () => const Center(
         child: CircularProgressIndicator(color: AppColors.primaryContainer),
       ),
-      error: (e, __) => Center(child: Text('Error al cargar datos: $e')),
+      error: (e, _) => Center(child: Text('Error al cargar datos: $e')),
     );
   }
 
@@ -374,7 +378,7 @@ class ProfileTab extends ConsumerWidget {
                 boxShadow: [
                   if (!isLocked)
                     BoxShadow(
-                      color: bgColor.withOpacity(0.3),
+                      color: bgColor.withValues(alpha: 0.3),
                       blurRadius: 6,
                       offset: const Offset(0, 3),
                     ),

@@ -12,7 +12,8 @@ class RankingsTab extends StatefulWidget {
   State<RankingsTab> createState() => _RankingsTabState();
 }
 
-class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStateMixin {
+class _RankingsTabState extends State<RankingsTab>
+    with SingleTickerProviderStateMixin {
   final ApiService _api = ApiService();
   List<RankingModel> _rankings = [];
   bool _isLoading = true;
@@ -46,7 +47,9 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator(color: AppColors.primaryContainer));
+      return const Center(
+        child: CircularProgressIndicator(color: AppColors.primaryContainer),
+      );
     }
 
     final top3 = _rankings.take(3).toList();
@@ -67,9 +70,9 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
             children: [
               Text(
                 'Tabla de Posiciones',
-                style: AppTextStyles.headlineLgMobile(color: AppColors.onSurface).copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+                style: AppTextStyles.headlineLgMobile(
+                  color: AppColors.onSurface,
+                ).copyWith(fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 4),
               Text(
@@ -139,22 +142,29 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
 
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: isCurrentUser ? AppColors.secondaryContainer : AppColors.outlineVariant.withOpacity(0.4),
+                        color: isCurrentUser
+                            ? AppColors.secondaryContainer
+                            : AppColors.outlineVariant.withValues(alpha: 0.4),
                         width: isCurrentUser ? 2 : 1,
                       ),
                       boxShadow: [
                         BoxShadow(
                           color: isCurrentUser
-                              ? AppColors.secondaryContainer.withOpacity(0.12)
-                              : Colors.black.withOpacity(0.01),
+                              ? AppColors.secondaryContainer.withValues(
+                                  alpha: 0.12,
+                                )
+                              : Colors.black.withValues(alpha: 0.01),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
-                        )
+                        ),
                       ],
                     ),
                     child: Row(
@@ -167,7 +177,9 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w900,
-                              color: isCurrentUser ? AppColors.secondary : Colors.grey.shade500,
+                              color: isCurrentUser
+                                  ? AppColors.secondary
+                                  : Colors.grey.shade500,
                             ),
                           ),
                         ),
@@ -176,11 +188,19 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
                         // User Avatar
                         CircleAvatar(
                           radius: 20,
-                          backgroundColor: isCurrentUser ? AppColors.secondaryContainer : const Color(0xFFF1F5F9),
+                          backgroundColor: isCurrentUser
+                              ? AppColors.secondaryContainer
+                              : const Color(0xFFF1F5F9),
                           child: isCurrentUser
-                              ? const Icon(Icons.person, color: AppColors.primaryContainer, size: 20)
+                              ? const Icon(
+                                  Icons.person,
+                                  color: AppColors.primaryContainer,
+                                  size: 20,
+                                )
                               : Text(
-                                  user.primerNombre.isNotEmpty ? user.primerNombre[0].toUpperCase() : '?',
+                                  user.primerNombre.isNotEmpty
+                                      ? user.primerNombre[0].toUpperCase()
+                                      : '?',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.primary,
@@ -201,13 +221,18 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,
-                                      color: isCurrentUser ? AppColors.primaryContainer : Colors.black87,
+                                      color: isCurrentUser
+                                          ? AppColors.primaryContainer
+                                          : Colors.black87,
                                     ),
                                   ),
                                   if (isCurrentUser) ...[
                                     const SizedBox(width: 6),
                                     Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 2,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: AppColors.secondaryContainer,
                                         borderRadius: BorderRadius.circular(6),
@@ -215,13 +240,13 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
                                       child: const Text(
                                         'Tú',
                                         style: TextStyle(
-                                          fontSize: 9, 
-                                          fontWeight: FontWeight.bold, 
+                                          fontSize: 9,
+                                          fontWeight: FontWeight.bold,
                                           color: AppColors.onSecondaryContainer,
                                         ),
                                       ),
-                                    )
-                                  ]
+                                    ),
+                                  ],
                                 ],
                               ),
                               const SizedBox(height: 4),
@@ -241,8 +266,10 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
                                             width: 50 * (user.accuracy / 100),
                                             height: 6,
                                             decoration: BoxDecoration(
-                                              color: AppColors.secondaryContainer,
-                                              borderRadius: BorderRadius.circular(3),
+                                              color:
+                                                  AppColors.secondaryContainer,
+                                              borderRadius:
+                                                  BorderRadius.circular(3),
                                             ),
                                           ),
                                         ],
@@ -252,10 +279,12 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
                                   ],
                                   Text(
                                     '${user.accuracy}% Precisión',
-                                    style: AppTextStyles.bodySm(color: AppColors.onSurfaceVariant).copyWith(fontSize: 11),
+                                    style: AppTextStyles.bodySm(
+                                      color: AppColors.onSurfaceVariant,
+                                    ).copyWith(fontSize: 11),
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -265,20 +294,21 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              NumberFormat.decimalPattern().format(user.puntajeAcumulado),
-                              style: AppTextStyles.scoreDisplay(color: AppColors.primaryContainer).copyWith(
-                                fontSize: 16,
+                              NumberFormat.decimalPattern().format(
+                                user.puntajeAcumulado,
                               ),
+                              style: AppTextStyles.scoreDisplay(
+                                color: AppColors.primaryContainer,
+                              ).copyWith(fontSize: 16),
                             ),
                             Text(
                               'PTS',
-                              style: AppTextStyles.labelMd(color: AppColors.outline).copyWith(
-                                fontSize: 9,
-                                letterSpacing: 0.5,
-                              ),
+                              style: AppTextStyles.labelMd(
+                                color: AppColors.outline,
+                              ).copyWith(fontSize: 9, letterSpacing: 0.5),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   );
@@ -300,7 +330,9 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
     required Color badgeColor,
     bool hasCrown = false,
   }) {
-    final initials = user.primerNombre.isNotEmpty ? user.primerNombre[0].toUpperCase() : '?';
+    final initials = user.primerNombre.isNotEmpty
+        ? user.primerNombre[0].toUpperCase()
+        : '?';
     final points = NumberFormat.decimalPattern().format(user.puntajeAcumulado);
 
     return Column(
@@ -314,30 +346,37 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: badgeColor, width: position == 1 ? 3.5 : 2),
+                border: Border.all(
+                  color: badgeColor,
+                  width: position == 1 ? 3.5 : 2,
+                ),
                 boxShadow: [
                   if (position == 1)
                     BoxShadow(
-                      color: badgeColor.withOpacity(0.4),
+                      color: badgeColor.withValues(alpha: 0.4),
                       blurRadius: 10,
                       spreadRadius: 2,
-                    )
+                    ),
                 ],
               ),
               child: CircleAvatar(
                 radius: position == 1 ? 30 : 25,
-                backgroundColor: position == 1 ? AppColors.primaryContainer : const Color(0xFFF1F5F9),
+                backgroundColor: position == 1
+                    ? AppColors.primaryContainer
+                    : const Color(0xFFF1F5F9),
                 child: Text(
                   initials,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: position == 1 ? 22 : 18,
-                    color: position == 1 ? Colors.white : AppColors.primaryContainer,
+                    color: position == 1
+                        ? Colors.white
+                        : AppColors.primaryContainer,
                   ),
                 ),
               ),
             ),
-            
+
             // Floating Crown for 1st Place
             if (hasCrown)
               Positioned(
@@ -348,8 +387,8 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
                     return Transform.translate(
                       offset: Offset(0, 4 * _animationController.value),
                       child: const Icon(
-                        Icons.emoji_events, 
-                        color: AppColors.secondaryContainer, 
+                        Icons.emoji_events,
+                        color: AppColors.secondaryContainer,
                         size: 28,
                       ),
                     );
@@ -372,26 +411,34 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w900,
-                    color: position == 1 ? AppColors.onSecondaryContainer : Colors.white,
+                    color: position == 1
+                        ? AppColors.onSecondaryContainer
+                        : Colors.white,
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
         const SizedBox(height: 12),
-        
+
         // Compact name
         Text(
           '${user.primerNombre} ${user.primerApellido.isNotEmpty ? user.primerApellido[0] : ""}.',
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.onSurface),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+            color: AppColors.onSurface,
+          ),
         ),
-        
+
         // Points
         Text(
           '$points pts',
           style: TextStyle(
-            color: position == 1 ? AppColors.secondary : AppColors.onSurfaceVariant,
+            color: position == 1
+                ? AppColors.secondary
+                : AppColors.onSurfaceVariant,
             fontSize: 11,
             fontWeight: FontWeight.bold,
           ),
@@ -410,10 +457,10 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.04),
+                color: Colors.black.withValues(alpha: 0.04),
                 blurRadius: 4,
                 offset: const Offset(0, -2),
-              )
+              ),
             ],
           ),
           alignment: Alignment.center,
@@ -422,21 +469,29 @@ class _RankingsTabState extends State<RankingsTab> with SingleTickerProviderStat
             children: [
               Icon(
                 Icons.emoji_events_outlined,
-                color: position == 1 ? AppColors.secondaryContainer : AppColors.primaryContainer.withOpacity(0.6),
+                color: position == 1
+                    ? AppColors.secondaryContainer
+                    : AppColors.primaryContainer.withValues(alpha: 0.6),
                 size: position == 1 ? 26 : 20,
               ),
               const SizedBox(height: 4),
               Text(
-                position == 1 ? '1ST' : position == 2 ? '2ND' : '3RD',
+                position == 1
+                    ? '1ST'
+                    : position == 2
+                    ? '2ND'
+                    : '3RD',
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w900,
-                  color: position == 1 ? AppColors.secondary : Colors.grey.shade600,
+                  color: position == 1
+                      ? AppColors.secondary
+                      : Colors.grey.shade600,
                 ),
-              )
+              ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

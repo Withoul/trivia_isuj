@@ -137,8 +137,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.primaryContainer.withOpacity(0.08),
-                    AppColors.primaryContainer.withOpacity(0.0),
+                    AppColors.primaryContainer.withValues(alpha: 0.08),
+                    AppColors.primaryContainer.withValues(alpha: 0.0),
                   ],
                 ),
               ),
@@ -155,8 +155,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.secondaryContainer.withOpacity(0.09),
-                    AppColors.secondaryContainer.withOpacity(0.0),
+                    AppColors.secondaryContainer.withValues(alpha: 0.09),
+                    AppColors.secondaryContainer.withValues(alpha: 0.0),
                   ],
                 ),
               ),
@@ -186,13 +186,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF0F172A).withOpacity(0.03),
+                              color: const Color(
+                                0xFF0F172A,
+                              ).withValues(alpha: 0.03),
                               blurRadius: 20,
                               offset: const Offset(0, 8),
                             ),
                           ],
                           border: Border.all(
-                            color: AppColors.outlineVariant.withOpacity(0.5),
+                            color: AppColors.outlineVariant.withValues(
+                              alpha: 0.5,
+                            ),
                           ),
                         ),
                         child: Column(
@@ -334,8 +338,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryContainer,
                           foregroundColor: Colors.white,
-                          shadowColor: AppColors.primaryContainer.withOpacity(
-                            0.3,
+                          shadowColor: AppColors.primaryContainer.withValues(
+                            alpha: 0.3,
                           ),
                         ),
                         child: _isLoading
@@ -363,7 +367,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           Expanded(
                             child: Divider(
-                              color: AppColors.outlineVariant.withOpacity(0.5),
+                              color: AppColors.outlineVariant.withValues(
+                                alpha: 0.5,
+                              ),
                             ),
                           ),
                           Padding(
@@ -384,7 +390,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           Expanded(
                             child: Divider(
-                              color: AppColors.outlineVariant.withOpacity(0.5),
+                              color: AppColors.outlineVariant.withValues(
+                                alpha: 0.5,
+                              ),
                             ),
                           ),
                         ],
@@ -405,7 +413,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 borderRadius: BorderRadius.circular(16),
                                 side: BorderSide(
                                   color: AppColors.secondaryContainer
-                                      .withOpacity(0.4),
+                                      .withValues(alpha: 0.4),
                                   width: 1.5,
                                 ),
                               ),
@@ -472,8 +480,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                                 side: BorderSide(
-                                  color: AppColors.primaryContainer.withOpacity(
-                                    0.2,
+                                  color: AppColors.primaryContainer.withValues(
+                                    alpha: 0.2,
                                   ),
                                   width: 1.5,
                                 ),

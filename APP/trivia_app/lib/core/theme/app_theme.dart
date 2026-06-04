@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
-import 'app_text_styles.dart';
 
 class AppTheme {
   // --- PLAYER THEME: Gamified, approachable, using branding colors ---
@@ -47,7 +46,9 @@ class AppTheme {
           elevation: 2,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Approachable rounded edges
+            borderRadius: BorderRadius.circular(
+              12,
+            ), // Approachable rounded edges
           ),
           textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
@@ -65,7 +66,10 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: const Color(0xFFF8F9FE),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.outlineVariant),
@@ -87,9 +91,7 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: Colors.white,
         elevation: 1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
@@ -134,7 +136,9 @@ class AppTheme {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // More structured edges (8px)
+            borderRadius: BorderRadius.circular(
+              8,
+            ), // More structured edges (8px)
           ),
           textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
         ),
@@ -143,9 +147,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
           side: const BorderSide(color: Color(0xFFE2E8F0), width: 1.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           foregroundColor: const Color(0xFF334155),
           textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
         ),
@@ -153,7 +155,10 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Color(0xFFE2E8F0)),

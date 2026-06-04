@@ -6,11 +6,7 @@ class LogoHeader extends StatelessWidget {
   final double iconSize;
   final double spacing;
 
-  const LogoHeader({
-    super.key,
-    this.iconSize = 36,
-    this.spacing = 12,
-  });
+  const LogoHeader({super.key, this.iconSize = 36, this.spacing = 12});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +20,10 @@ class LogoHeader extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primaryContainer.withOpacity(0.2),
+                color: AppColors.primaryContainer.withValues(alpha: 0.2),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
-              )
+              ),
             ],
           ),
           child: Icon(
@@ -43,14 +39,16 @@ class LogoHeader extends StatelessWidget {
           children: [
             RichText(
               text: TextSpan(
-                style: AppTextStyles.titleMd(color: AppColors.primary).copyWith(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.5,
-                ),
+                style: AppTextStyles.titleMd(
+                  color: AppColors.primary,
+                ).copyWith(fontWeight: FontWeight.bold, letterSpacing: -0.5),
                 children: const [
                   TextSpan(
                     text: 'U',
-                    style: TextStyle(color: AppColors.secondaryContainer, fontWeight: FontWeight.w800),
+                    style: TextStyle(
+                      color: AppColors.secondaryContainer,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                   TextSpan(
                     text: 'NIVERSITARIO',

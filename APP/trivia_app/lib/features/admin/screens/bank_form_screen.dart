@@ -16,7 +16,7 @@ class BankFormScreen extends StatefulWidget {
 class _BankFormScreenState extends State<BankFormScreen> {
   final ApiService _api = ApiService();
   final _formKey = GlobalKey<FormState>();
-  
+
   final _titleCtrl = TextEditingController();
   bool _isActive = true;
   DateTime? _startDate;
@@ -63,7 +63,9 @@ class _BankFormScreenState extends State<BankFormScreen> {
     if (picked != null) {
       final TimeOfDay? timePicked = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.fromDateTime((isStart ? _startDate : _endDate) ?? DateTime.now()),
+        initialTime: TimeOfDay.fromDateTime(
+          (isStart ? _startDate : _endDate) ?? DateTime.now(),
+        ),
       );
 
       if (timePicked != null) {
@@ -87,9 +89,9 @@ class _BankFormScreenState extends State<BankFormScreen> {
 
   void _saveForm() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     setState(() => _isLoading = true);
-    
+
     QuizBankModel? result;
     if (widget.bankToEdit != null) {
       // Update
@@ -117,9 +119,9 @@ class _BankFormScreenState extends State<BankFormScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              widget.bankToEdit != null 
-                  ? 'Cuestionario actualizado correctamente' 
-                  : 'Cuestionario creado correctamente'
+              widget.bankToEdit != null
+                  ? 'Cuestionario actualizado correctamente'
+                  : 'Cuestionario creado correctamente',
             ),
             backgroundColor: Colors.green,
           ),
@@ -142,7 +144,9 @@ class _BankFormScreenState extends State<BankFormScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Error al guardar. Verifica tu conexión con el backend.'),
+            content: Text(
+              'Error al guardar. Verifica tu conexión con el backend.',
+            ),
             backgroundColor: AppColors.error,
           ),
         );
@@ -165,7 +169,11 @@ class _BankFormScreenState extends State<BankFormScreen> {
             if (!isEditing) ...[
               const Text(
                 'Nuevo Banco de Preguntas',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF0F172A),
+                ),
               ),
               const Text(
                 'Llena los campos para publicar un nuevo cuestionario',
@@ -177,7 +185,11 @@ class _BankFormScreenState extends State<BankFormScreen> {
             // Title Field
             const Text(
               'Título del Cuestionario',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF334155), fontSize: 14),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF334155),
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 8),
             TextFormField(
@@ -185,7 +197,9 @@ class _BankFormScreenState extends State<BankFormScreen> {
               decoration: const InputDecoration(
                 hintText: 'Ej. Matemáticas Básicas - Examen 1',
               ),
-              validator: (val) => (val == null || val.isEmpty) ? 'El título es requerido' : null,
+              validator: (val) => (val == null || val.isEmpty)
+                  ? 'El título es requerido'
+                  : null,
             ),
             const SizedBox(height: 20),
 
@@ -202,7 +216,11 @@ class _BankFormScreenState extends State<BankFormScreen> {
                 children: [
                   const Text(
                     'Estado del Cuestionario',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF334155), fontSize: 14),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF334155),
+                      fontSize: 14,
+                    ),
                   ),
                   Row(
                     children: [
@@ -217,11 +235,11 @@ class _BankFormScreenState extends State<BankFormScreen> {
                       const SizedBox(width: 8),
                       Switch(
                         value: _isActive,
-                        activeColor: AppColors.primaryContainer,
+                        activeThumbColor: AppColors.primaryContainer,
                         onChanged: (val) => setState(() => _isActive = val),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -230,7 +248,11 @@ class _BankFormScreenState extends State<BankFormScreen> {
             // Date limits header
             const Text(
               'Rango de Disponibilidad (Opcional)',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF334155), fontSize: 14),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF334155),
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 12),
 
@@ -241,13 +263,21 @@ class _BankFormScreenState extends State<BankFormScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Fecha de Inicio', style: TextStyle(color: Color(0xFF64748B), fontSize: 12)),
+                      const Text(
+                        'Fecha de Inicio',
+                        style: TextStyle(
+                          color: Color(0xFF64748B),
+                          fontSize: 12,
+                        ),
+                      ),
                       const SizedBox(height: 6),
                       OutlinedButton.icon(
                         onPressed: () => _selectDate(context, true),
                         icon: const Icon(Icons.calendar_today, size: 16),
                         label: Text(
-                          _startDate != null ? format.format(_startDate!) : 'Elegir Fecha',
+                          _startDate != null
+                              ? format.format(_startDate!)
+                              : 'Elegir Fecha',
                           style: const TextStyle(fontSize: 13),
                         ),
                         style: OutlinedButton.styleFrom(
@@ -269,13 +299,21 @@ class _BankFormScreenState extends State<BankFormScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Fecha de Finalización', style: TextStyle(color: Color(0xFF64748B), fontSize: 12)),
+                      const Text(
+                        'Fecha de Finalización',
+                        style: TextStyle(
+                          color: Color(0xFF64748B),
+                          fontSize: 12,
+                        ),
+                      ),
                       const SizedBox(height: 6),
                       OutlinedButton.icon(
                         onPressed: () => _selectDate(context, false),
                         icon: const Icon(Icons.event_busy, size: 16),
                         label: Text(
-                          _endDate != null ? format.format(_endDate!) : 'Elegir Fecha',
+                          _endDate != null
+                              ? format.format(_endDate!)
+                              : 'Elegir Fecha',
                           style: const TextStyle(fontSize: 13),
                         ),
                         style: OutlinedButton.styleFrom(
@@ -288,7 +326,7 @@ class _BankFormScreenState extends State<BankFormScreen> {
                 ),
               ],
             ),
-            
+
             // Date clear action
             if (_startDate != null || _endDate != null) ...[
               const SizedBox(height: 12),
@@ -299,12 +337,19 @@ class _BankFormScreenState extends State<BankFormScreen> {
                     _startDate = null;
                     _endDate = null;
                   }),
-                  icon: const Icon(Icons.clear, size: 16, color: AppColors.error),
-                  label: const Text('Limpiar fechas', style: TextStyle(color: AppColors.error)),
+                  icon: const Icon(
+                    Icons.clear,
+                    size: 16,
+                    color: AppColors.error,
+                  ),
+                  label: const Text(
+                    'Limpiar fechas',
+                    style: TextStyle(color: AppColors.error),
+                  ),
                 ),
               ),
             ],
-            
+
             const SizedBox(height: 32),
 
             // Save Action Button
@@ -323,8 +368,13 @@ class _BankFormScreenState extends State<BankFormScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            isEditing ? 'Guardar Cambios  ' : 'Publicar Cuestionario  ',
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            isEditing
+                                ? 'Guardar Cambios  '
+                                : 'Publicar Cuestionario  ',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const Icon(Icons.save, color: Colors.white, size: 18),
                         ],

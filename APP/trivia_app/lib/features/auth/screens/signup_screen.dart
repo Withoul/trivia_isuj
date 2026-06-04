@@ -185,8 +185,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.primaryContainer.withOpacity(0.06),
-                    AppColors.primaryContainer.withOpacity(0.0),
+                    AppColors.primaryContainer.withValues(alpha: 0.06),
+                    AppColors.primaryContainer.withValues(alpha: 0.0),
                   ],
                 ),
               ),
@@ -202,8 +202,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.secondaryContainer.withOpacity(0.06),
-                    AppColors.secondaryContainer.withOpacity(0.0),
+                    AppColors.secondaryContainer.withValues(alpha: 0.06),
+                    AppColors.secondaryContainer.withValues(alpha: 0.0),
                   ],
                 ),
               ),
@@ -269,13 +269,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF0F172A).withOpacity(0.03),
+                            color: const Color(
+                              0xFF0F172A,
+                            ).withValues(alpha: 0.03),
                             blurRadius: 20,
                             offset: const Offset(0, 8),
                           ),
                         ],
                         border: Border.all(
-                          color: AppColors.outlineVariant.withOpacity(0.5),
+                          color: AppColors.outlineVariant.withValues(
+                            alpha: 0.5,
+                          ),
                         ),
                       ),
                       child: _currentStep == 1
