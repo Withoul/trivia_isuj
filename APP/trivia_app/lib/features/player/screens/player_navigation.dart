@@ -199,9 +199,9 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              isSelected && index == 1 ? Icons.emoji_events : icon,
+              isSelected && index == 2 ? Icons.emoji_events : icon,
               color: isSelected
-                  ? (index == 1 ? AppColors.secondaryContainer : Colors.white)
+                  ? (index == 2 ? AppColors.secondaryContainer : Colors.white)
                   : AppColors.onSurfaceVariant.withValues(alpha: 0.7),
               size: 24,
             ),

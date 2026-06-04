@@ -4,6 +4,7 @@ import '../models/user_model.dart';
 import '../models/quiz_bank_model.dart';
 import '../models/question_model.dart';
 import '../models/ranking_model.dart';
+import '../models/tienda_item_model.dart';
 import 'database_helper.dart';
 
 class ApiService {
@@ -17,29 +18,84 @@ class ApiService {
   }
 
   // --- OFFLINE DEMO MOCK DATA STORE ---
-  static UserModel _mockUserProfile = UserModel(
-    id: 999,
-    correo: 'demo.jugador@ujapon.edu.ec',
-    primerNombre: 'Carlos',
-    primerApellido: 'Mendoza',
-    institucion: 'Abdon Calderón',
-    tipoPerfil: 'JUGADOR',
-    puntajeTotal: 1250,
-    quizzesCompletados: 4,
-    rachaMaxima: 6,
-  );
+  static final List<UserModel> _mockUsersList = [
+    UserModel(
+      id: 999,
+      correo: 'demo.jugador@itsjapon.edu.ec',
+      primerNombre: 'Carlos',
+      primerApellido: 'Mendoza',
+      institucion: 'Abdon Calderón',
+      tipoPerfil: 'JUGADOR',
+      cedula: '1722222222',
+      telefono: '0988888888',
+      puntajeTotal: 1250,
+      quizzesCompletados: 4,
+      rachaMaxima: 6,
+    ),
+    UserModel(
+      id: 888,
+      correo: 'demo.admin@itsjapon.edu.ec',
+      primerNombre: 'Dra. María',
+      primerApellido: 'Espinoza',
+      institucion: 'Dirección Académica',
+      tipoPerfil: 'ADMINISTRADOR',
+      cedula: '1799999999',
+      telefono: '0999999999',
+      puntajeTotal: 0,
+      quizzesCompletados: 0,
+      rachaMaxima: 0,
+    ),
+    UserModel(
+      id: 101,
+      correo: 'estudiante1@itsjapon.edu.ec',
+      primerNombre: 'Juan',
+      primerApellido: 'Pérez',
+      institucion: 'Ingeniería Mecánica',
+      tipoPerfil: 'JUGADOR',
+      cedula: '1723456789',
+      telefono: '0991234567',
+      puntajeTotal: 450,
+      quizzesCompletados: 2,
+      rachaMaxima: 2,
+    ),
+  ];
 
-  static final UserModel _mockAdminProfile = UserModel(
-    id: 888,
-    correo: 'demo.admin@itsjapon.edu.ec',
-    primerNombre: 'Dra. María',
-    primerApellido: 'Espinoza',
-    institucion: 'Dirección Académica',
-    tipoPerfil: 'ADMINISTRADOR',
-    puntajeTotal: 0,
-    quizzesCompletados: 0,
-    rachaMaxima: 0,
-  );
+  static final List<TiendaItemModel> _mockStoreItems = [
+    TiendaItemModel(
+      id: 1,
+      nombre: 'Termo Metálico ISUTJ',
+      valor: 200,
+      stock: 12,
+      icono: 'gift',
+      canjeado: false,
+    ),
+    TiendaItemModel(
+      id: 2,
+      nombre: 'Camiseta Oficial Puma',
+      valor: 500,
+      stock: 4,
+      icono: 'bag',
+      canjeado: false,
+    ),
+    TiendaItemModel(
+      id: 3,
+      nombre: 'Gorra Bordada Institucional',
+      valor: 150,
+      stock: 0,
+      icono: 'trophy',
+      canjeado: false,
+    ),
+    TiendaItemModel(
+      id: 4,
+      nombre: 'Cuaderno Pasta Dura',
+      valor: 80,
+      stock: 25,
+      icono: 'book',
+      canjeado: false,
+    ),
+  ];
+
+  static final List<int> _mockUserRedemptions = [4];
 
   static final List<QuizBankModel> _mockBanks = [
     QuizBankModel(
@@ -49,6 +105,10 @@ class ApiService {
       tiempoInicio: DateTime.now().subtract(const Duration(days: 1)),
       tiempoFin: DateTime.now().add(const Duration(hours: 3, minutes: 45)),
       creadoEn: DateTime.now().subtract(const Duration(days: 2)),
+      tiempoPorPregunta: 15,
+      colorBanner: '#461F70',
+      puntosPorPregunta: 10,
+      esPermanente: false,
     ),
     QuizBankModel(
       id: 102,
@@ -57,14 +117,22 @@ class ApiService {
       tiempoInicio: DateTime.now().subtract(const Duration(days: 2)),
       tiempoFin: DateTime.now().add(const Duration(days: 2)),
       creadoEn: DateTime.now().subtract(const Duration(days: 3)),
+      tiempoPorPregunta: 20,
+      colorBanner: '#0D9488',
+      puntosPorPregunta: 5,
+      esPermanente: false,
     ),
     QuizBankModel(
       id: 103,
       titulo: 'Base de Datos Relacionales (Demo)',
       isActive: true,
-      tiempoInicio: DateTime.now().subtract(const Duration(days: 5)),
-      tiempoFin: DateTime.now().add(const Duration(days: 5)),
+      tiempoInicio: null,
+      tiempoFin: null,
       creadoEn: DateTime.now().subtract(const Duration(days: 6)),
+      tiempoPorPregunta: 12,
+      colorBanner: '#DC2626',
+      puntosPorPregunta: 8,
+      esPermanente: true,
     ),
   ];
 
@@ -241,11 +309,6 @@ class ApiService {
     return token != null && token.startsWith('mock_token_demo');
   }
 
-  Future<bool> _isDemoAdmin() async {
-    final token = await _getToken();
-    return token == 'mock_token_demo_admin';
-  }
-
   // --- AUTHENTICATION ---
 
   Future<Map<String, dynamic>?> login(String correo, String contrasena) async {
@@ -310,11 +373,35 @@ class ApiService {
 
   Future<UserModel?> getUserProfile() async {
     if (await _isDemo()) {
-      if (await _isDemoAdmin()) {
-        return _mockAdminProfile;
-      } else {
-        return _mockUserProfile;
+      final session = await DatabaseHelper.instance.getSession();
+      final email = session?['email'] ?? 'demo.jugador@itsjapon.edu.ec';
+      final userIndex = _mockUsersList.indexWhere((u) => u.correo == email);
+      final user = userIndex != -1 ? _mockUsersList[userIndex] : _mockUsersList[0];
+      
+      if (user.tipoPerfil == 'JUGADOR') {
+        final spentPoints = _mockStoreItems
+            .where((item) => _mockUserRedemptions.contains(item.id))
+            .fold(0, (sum, item) => sum + item.valor);
+        final available = (user.puntajeTotal ?? 0) - spentPoints;
+        return UserModel(
+          id: user.id,
+          correo: user.correo,
+          primerNombre: user.primerNombre,
+          segundoNombre: user.segundoNombre,
+          primerApellido: user.primerApellido,
+          segundoApellido: user.segundoApellido,
+          institucion: user.institucion,
+          tipoPerfil: user.tipoPerfil,
+          cedula: user.cedula,
+          telefono: user.telefono,
+          creadoEn: user.creadoEn,
+          puntajeTotal: user.puntajeTotal,
+          puntosDisponibles: available,
+          quizzesCompletados: user.quizzesCompletados,
+          rachaMaxima: user.rachaMaxima,
+        );
       }
+      return user;
     }
 
     try {
@@ -390,21 +477,35 @@ class ApiService {
 
   Future<bool> submitScore(int bankId, int finalScore) async {
     if (await _isDemo()) {
-      final oldScore = _mockUserProfile.puntajeTotal ?? 0;
-      final oldQuizzes = _mockUserProfile.quizzesCompletados ?? 0;
-      final oldRacha = _mockUserProfile.rachaMaxima ?? 0;
+      final session = await DatabaseHelper.instance.getSession();
+      final email = session?['email'] ?? 'demo.jugador@itsjapon.edu.ec';
+      final userIndex = _mockUsersList.indexWhere((u) => u.correo == email);
+      final user = userIndex != -1 ? _mockUsersList[userIndex] : _mockUsersList[0];
 
-      _mockUserProfile = UserModel(
-        id: _mockUserProfile.id,
-        correo: _mockUserProfile.correo,
-        primerNombre: _mockUserProfile.primerNombre,
-        primerApellido: _mockUserProfile.primerApellido,
-        institucion: _mockUserProfile.institucion,
-        tipoPerfil: _mockUserProfile.tipoPerfil,
+      final oldScore = user.puntajeTotal ?? 0;
+      final oldQuizzes = user.quizzesCompletados ?? 0;
+      final oldRacha = user.rachaMaxima ?? 0;
+
+      final updatedUser = UserModel(
+        id: user.id,
+        correo: user.correo,
+        primerNombre: user.primerNombre,
+        segundoNombre: user.segundoNombre,
+        primerApellido: user.primerApellido,
+        segundoApellido: user.segundoApellido,
+        institucion: user.institucion,
+        tipoPerfil: user.tipoPerfil,
+        cedula: user.cedula,
+        telefono: user.telefono,
+        creadoEn: user.creadoEn,
         puntajeTotal: oldScore + finalScore,
         quizzesCompletados: oldQuizzes + 1,
         rachaMaxima: finalScore > 0 ? oldRacha + 1 : oldRacha,
       );
+
+      if (userIndex != -1) {
+        _mockUsersList[userIndex] = updatedUser;
+      }
       return true;
     }
 
@@ -435,11 +536,11 @@ class ApiService {
       allRanks.add(
         RankingModel(
           usuarioId: 999,
-          primerNombre: _mockUserProfile.primerNombre,
-          primerApellido: _mockUserProfile.primerApellido,
-          correo: _mockUserProfile.correo,
-          institucion: _mockUserProfile.institucion,
-          puntajeAcumulado: _mockUserProfile.puntajeTotal ?? 0,
+          primerNombre: _mockUsersList[0].primerNombre,
+          primerApellido: _mockUsersList[0].primerApellido,
+          correo: _mockUsersList[0].correo,
+          institucion: _mockUsersList[0].institucion,
+          puntajeAcumulado: _mockUsersList[0].puntajeTotal ?? 0,
           accuracy: 88,
         ),
       );
@@ -496,16 +597,24 @@ class ApiService {
     String titulo,
     bool isActive,
     DateTime? tiempoInicio,
-    DateTime? tiempoFin,
-  ) async {
+    DateTime? tiempoFin, {
+    int tiempoPorPregunta = 12,
+    String colorBanner = '#461F70',
+    int puntosPorPregunta = 5,
+    bool esPermanente = false,
+  }) async {
     if (await _isDemo()) {
       final newBank = QuizBankModel(
-        id: _mockBanks.length + 101,
+        id: _mockBanks.length + 104,
         titulo: titulo,
         isActive: isActive,
-        tiempoInicio: tiempoInicio ?? DateTime.now(),
-        tiempoFin: tiempoFin ?? DateTime.now().add(const Duration(days: 7)),
+        tiempoInicio: esPermanente ? null : (tiempoInicio ?? DateTime.now()),
+        tiempoFin: esPermanente ? null : (tiempoFin ?? DateTime.now().add(const Duration(days: 7))),
         creadoEn: DateTime.now(),
+        tiempoPorPregunta: tiempoPorPregunta,
+        colorBanner: colorBanner,
+        puntosPorPregunta: puntosPorPregunta,
+        esPermanente: esPermanente,
       );
       _mockBanks.add(newBank);
       _mockQuestions[newBank.id] = [];
@@ -527,6 +636,10 @@ class ApiService {
           'is_active': isActive,
           'tiempo_inicio': tiempoInicio?.toIso8601String(),
           'tiempo_fin': tiempoFin?.toIso8601String(),
+          'tiempo_por_pregunta': tiempoPorPregunta,
+          'color_banner': colorBanner,
+          'puntos_por_pregunta': puntosPorPregunta,
+          'es_permanente': esPermanente,
         }),
       );
 
@@ -545,8 +658,12 @@ class ApiService {
     String titulo,
     bool isActive,
     DateTime? tiempoInicio,
-    DateTime? tiempoFin,
-  ) async {
+    DateTime? tiempoFin, {
+    int tiempoPorPregunta = 12,
+    String colorBanner = '#461F70',
+    int puntosPorPregunta = 5,
+    bool esPermanente = false,
+  }) async {
     if (await _isDemo()) {
       final index = _mockBanks.indexWhere((b) => b.id == bankId);
       if (index != -1) {
@@ -554,9 +671,13 @@ class ApiService {
           id: bankId,
           titulo: titulo,
           isActive: isActive,
-          tiempoInicio: tiempoInicio ?? _mockBanks[index].tiempoInicio,
-          tiempoFin: tiempoFin ?? _mockBanks[index].tiempoFin,
+          tiempoInicio: esPermanente ? null : (tiempoInicio ?? _mockBanks[index].tiempoInicio),
+          tiempoFin: esPermanente ? null : (tiempoFin ?? _mockBanks[index].tiempoFin),
           creadoEn: _mockBanks[index].creadoEn,
+          tiempoPorPregunta: tiempoPorPregunta,
+          colorBanner: colorBanner,
+          puntosPorPregunta: puntosPorPregunta,
+          esPermanente: esPermanente,
         );
         _mockBanks[index] = updated;
         return updated;
@@ -579,6 +700,10 @@ class ApiService {
           'is_active': isActive,
           'tiempo_inicio': tiempoInicio?.toIso8601String(),
           'tiempo_fin': tiempoFin?.toIso8601String(),
+          'tiempo_por_pregunta': tiempoPorPregunta,
+          'color_banner': colorBanner,
+          'puntos_por_pregunta': puntosPorPregunta,
+          'es_permanente': esPermanente,
         }),
       );
 
@@ -612,7 +737,7 @@ class ApiService {
         );
       }
       final newQuestion = QuestionModel(
-        id: (_mockQuestions[bankId]?.length ?? 0) + 1,
+        id: (_mockQuestions[bankId]?.length ?? 0) + 100,
         textoPregunta: textoPregunta,
         respuestas: parsedAnswers,
       );
@@ -646,6 +771,200 @@ class ApiService {
       }
     } catch (e) {
       print('Admin create question error: $e');
+    }
+    return null;
+  }
+
+  // --- DELETE QUESTION ---
+  Future<bool> deleteQuestion(int bankId, int questionId) async {
+    if (await _isDemo()) {
+      if (_mockQuestions.containsKey(bankId)) {
+        _mockQuestions[bankId]!.removeWhere((q) => q.id == questionId);
+        return true;
+      }
+      return false;
+    }
+
+    try {
+      final token = await _getToken();
+      if (token == null) return false;
+
+      final response = await http.delete(
+        Uri.parse('$baseUrl/admin/banks/$bankId/questions/$questionId'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Admin delete question error: $e');
+      return false;
+    }
+  }
+
+  // --- UPDATE QUESTION ---
+  Future<QuestionModel?> updateQuestion(
+    int bankId,
+    int questionId,
+    String textoPregunta,
+    List<Map<String, dynamic>> respuestas,
+  ) async {
+    if (await _isDemo()) {
+      if (_mockQuestions.containsKey(bankId)) {
+        final index = _mockQuestions[bankId]!.indexWhere((q) => q.id == questionId);
+        if (index != -1) {
+          final List<AnswerModel> parsedAnswers = [];
+          for (int i = 0; i < respuestas.length; i++) {
+            parsedAnswers.add(
+              AnswerModel(
+                id: i + 1,
+                textoRespuesta: respuestas[i]['texto_respuesta'] ?? '',
+                esCorrecta: respuestas[i]['es_correcta'] ?? false,
+              ),
+            );
+          }
+          final updated = QuestionModel(
+            id: questionId,
+            textoPregunta: textoPregunta,
+            respuestas: parsedAnswers,
+          );
+          _mockQuestions[bankId]![index] = updated;
+          return updated;
+        }
+      }
+      return null;
+    }
+
+    try {
+      final token = await _getToken();
+      if (token == null) return null;
+
+      final response = await http.put(
+        Uri.parse('$baseUrl/admin/banks/$bankId/questions/$questionId'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'texto_pregunta': textoPregunta,
+          'respuestas': respuestas,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return QuestionModel.fromJson(data);
+      }
+    } catch (e) {
+      print('Admin update question error: $e');
+    }
+    return null;
+  }
+
+  // --- PLAYER STORE METHODS ---
+  Future<List<TiendaItemModel>> getStoreItems() async {
+    if (await _isDemo()) {
+      return _mockStoreItems.map((item) {
+        return item.copyWith(
+          canjeado: _mockUserRedemptions.contains(item.id),
+        );
+      }).toList();
+    }
+    return [];
+  }
+
+  Future<bool> redeemStoreItem(int itemId) async {
+    if (await _isDemo()) {
+      final index = _mockStoreItems.indexWhere((item) => item.id == itemId);
+      if (index != -1) {
+        final item = _mockStoreItems[index];
+        
+        final session = await DatabaseHelper.instance.getSession();
+        final email = session?['email'] ?? 'demo.jugador@itsjapon.edu.ec';
+        final user = _mockUsersList.firstWhere((u) => u.correo == email, orElse: () => _mockUsersList[0]);
+        
+        final spentPoints = _mockStoreItems
+            .where((item) => _mockUserRedemptions.contains(item.id))
+            .fold(0, (sum, item) => sum + item.valor);
+        final availablePoints = (user.puntajeTotal ?? 0) - spentPoints;
+
+        if (availablePoints >= item.valor && item.stock > 0 && !_mockUserRedemptions.contains(itemId)) {
+          _mockStoreItems[index] = item.copyWith(stock: item.stock - 1);
+          _mockUserRedemptions.add(itemId);
+          return true;
+        }
+      }
+      return false;
+    }
+    return false;
+  }
+
+  // --- ADMIN STORE METHODS ---
+  Future<List<TiendaItemModel>> getAdminStoreItems() async {
+    if (await _isDemo()) {
+      return _mockStoreItems;
+    }
+    return [];
+  }
+
+  Future<TiendaItemModel?> createStoreItem(String nombre, int valor, int stock, String icono) async {
+    if (await _isDemo()) {
+      final newItem = TiendaItemModel(
+        id: _mockStoreItems.isEmpty ? 1 : _mockStoreItems.map((item) => item.id).reduce((a, b) => a > b ? a : b) + 1,
+        nombre: nombre,
+        valor: valor,
+        stock: stock,
+        icono: icono,
+        canjeado: false,
+      );
+      _mockStoreItems.add(newItem);
+      return newItem;
+    }
+    return null;
+  }
+
+  Future<TiendaItemModel?> updateStoreItem(int itemId, String nombre, int valor, int stock, String icono) async {
+    if (await _isDemo()) {
+      final index = _mockStoreItems.indexWhere((item) => item.id == itemId);
+      if (index != -1) {
+        final updatedItem = TiendaItemModel(
+          id: itemId,
+          nombre: nombre,
+          valor: valor,
+          stock: stock,
+          icono: icono,
+          canjeado: _mockUserRedemptions.contains(itemId),
+        );
+        _mockStoreItems[index] = updatedItem;
+        return updatedItem;
+      }
+    }
+    return null;
+  }
+
+  Future<bool> deleteStoreItem(int itemId) async {
+    if (await _isDemo()) {
+      _mockStoreItems.removeWhere((item) => item.id == itemId);
+      _mockUserRedemptions.remove(itemId);
+      return true;
+    }
+    return false;
+  }
+
+  // --- ADMIN USER MANAGEMENT METHODS ---
+  Future<List<UserModel>> getAdminUsers() async {
+    if (await _isDemo()) {
+      return _mockUsersList;
+    }
+    return [];
+  }
+
+  Future<UserModel?> updateAdminUser(int userId, UserModel updatedUser) async {
+    if (await _isDemo()) {
+      final index = _mockUsersList.indexWhere((user) => user.id == userId);
+      if (index != -1) {
+        _mockUsersList[index] = updatedUser;
+        return updatedUser;
+      }
     }
     return null;
   }
