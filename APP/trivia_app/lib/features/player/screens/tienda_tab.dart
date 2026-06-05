@@ -273,12 +273,23 @@ class _TiendaTabState extends ConsumerState<TiendaTab> {
                       const SizedBox(height: 16),
 
                       if (_items.isEmpty)
-                        const Center(
+                        Center(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 40.0),
-                            child: Text(
-                              'No hay artículos disponibles en la tienda.',
-                              style: TextStyle(color: Colors.grey),
+                            padding: const EdgeInsets.symmetric(vertical: 40.0),
+                            child: Column(
+                              children: [
+                                Icon(Icons.shopping_bag_outlined, size: 64, color: Colors.grey.shade300),
+                                const SizedBox(height: 12),
+                                const Text(
+                                  'No hay artículos disponibles',
+                                  style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 15),
+                                ),
+                                const SizedBox(height: 4),
+                                const Text(
+                                  'Vuelve pronto, se agregarán nuevas recompensas.',
+                                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                                ),
+                              ],
                             ),
                           ),
                         )
@@ -286,20 +297,83 @@ class _TiendaTabState extends ConsumerState<TiendaTab> {
                         profileAsync.when(
                           data: (user) {
                             final userPoints = user?.puntosDisponibles ?? user?.puntajeTotal ?? 0;
-                            return GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 0.76,
-                                crossAxisSpacing: 14,
-                                mainAxisSpacing: 14,
-                              ),
-                              itemCount: _items.length,
-                              itemBuilder: (context, index) {
-                                final item = _items[index];
-                                return _buildStoreItemCard(item, userPoints);
-                              },
+                            final availableItems = _items.where((i) => !i.canjeado).toList();
+                            final redeemedItems = _items.where((i) => i.canjeado).toList();
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Available items grid
+                                if (availableItems.isNotEmpty)
+                                  GridView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 0.76,
+                                      crossAxisSpacing: 14,
+                                      mainAxisSpacing: 14,
+                                    ),
+                                    itemCount: availableItems.length,
+                                    itemBuilder: (context, index) {
+                                      return _buildStoreItemCard(availableItems[index], userPoints);
+                                    },
+                                  ),
+
+                                // Divider + Redeemed section
+                                if (redeemedItems.isNotEmpty) ...[
+                                  const SizedBox(height: 24),
+                                  Row(
+                                    children: [
+                                      Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.check_circle_outline, size: 16, color: Colors.green.shade600),
+                                            const SizedBox(width: 6),
+                                            Text(
+                                              'Premios Canjeados',
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.green.shade700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  GridView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 0.76,
+                                      crossAxisSpacing: 14,
+                                      mainAxisSpacing: 14,
+                                    ),
+                                    itemCount: redeemedItems.length,
+                                    itemBuilder: (context, index) {
+                                      return _buildStoreItemCard(redeemedItems[index], userPoints);
+                                    },
+                                  ),
+                                ],
+
+                                if (availableItems.isEmpty && redeemedItems.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: Center(
+                                      child: Text(
+                                        'No hay premios disponibles por ahora.',
+                                        style: TextStyle(color: Colors.grey.shade500, fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             );
                           },
                           loading: () => const Center(child: CircularProgressIndicator()),
@@ -315,7 +389,6 @@ class _TiendaTabState extends ConsumerState<TiendaTab> {
   }
 
   Widget _buildStoreItemCard(TiendaItemModel item, int userPoints) {
-    final hasStock = item.stock > 0;
     final isRedeemed = item.canjeado;
     final canAfford = userPoints >= item.valor;
 
@@ -324,9 +397,9 @@ class _TiendaTabState extends ConsumerState<TiendaTab> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isRedeemed 
+          color: isRedeemed
               ? Colors.green.withOpacity(0.3)
-              : (hasStock ? Colors.grey.shade200 : Colors.red.withOpacity(0.2)),
+              : Colors.grey.shade200,
           width: 1.5,
         ),
         boxShadow: [
@@ -344,9 +417,9 @@ class _TiendaTabState extends ConsumerState<TiendaTab> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: isRedeemed 
-                    ? Colors.green.withOpacity(0.04) 
-                    : (hasStock ? Colors.grey.shade50 : Colors.red.withOpacity(0.04)),
+                color: isRedeemed
+                    ? Colors.green.withOpacity(0.04)
+                    : Colors.grey.shade50,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
               ),
               child: Stack(
@@ -355,9 +428,9 @@ class _TiendaTabState extends ConsumerState<TiendaTab> {
                   Icon(
                     _getIcon(item.icono),
                     size: 48,
-                    color: isRedeemed 
+                    color: isRedeemed
                         ? Colors.green
-                        : (hasStock ? AppColors.secondaryContainer : Colors.grey),
+                        : AppColors.secondaryContainer,
                   ),
                   if (isRedeemed)
                     Positioned(
@@ -371,22 +444,6 @@ class _TiendaTabState extends ConsumerState<TiendaTab> {
                         ),
                         child: const Text(
                           'CANJEADO',
-                          style: TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    )
-                  else if (!hasStock)
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Text(
-                          'AGOTADO',
                           style: TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -426,38 +483,37 @@ class _TiendaTabState extends ConsumerState<TiendaTab> {
                         const MonedaIcon(size: 14),
                       ],
                     ),
-                    Text(
-                      'Stock: ${item.stock}',
-                      style: TextStyle(
-                        color: hasStock ? Colors.grey.shade600 : Colors.red,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
+                    if (!isRedeemed)
+                      Text(
+                        'Stock: ${item.stock}',
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                
+
                 // Action Button
                 SizedBox(
                   width: double.infinity,
                   height: 32,
                   child: ElevatedButton(
-                    onPressed: (isRedeemed || !hasStock) 
-                        ? null 
+                    onPressed: isRedeemed
+                        ? null
                         : () => _confirmRedemption(item, userPoints),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isRedeemed 
-                          ? Colors.green.shade100 
+                      backgroundColor: isRedeemed
+                          ? Colors.green.shade100
                           : (!canAfford ? Colors.grey.shade300 : AppColors.secondaryContainer),
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       elevation: 0,
                     ),
                     child: Text(
-                      isRedeemed 
-                          ? 'Canjeado ✓' 
-                          : (!hasStock ? 'Sin Stock' : 'Canjear'),
+                      isRedeemed ? 'Canjeado ✓' : 'Canjear',
                       style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
                     ),
                   ),

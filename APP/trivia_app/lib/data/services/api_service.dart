@@ -863,7 +863,10 @@ class ApiService {
   // --- PLAYER STORE METHODS ---
   Future<List<TiendaItemModel>> getStoreItems() async {
     if (await _isDemo()) {
-      return _mockStoreItems.map((item) {
+      return _mockStoreItems
+          .where((item) =>
+              item.stock > 0 || _mockUserRedemptions.contains(item.id))
+          .map((item) {
         return item.copyWith(
           canjeado: _mockUserRedemptions.contains(item.id),
         );

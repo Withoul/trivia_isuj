@@ -396,28 +396,6 @@ class _RankingsTabState extends State<RankingsTab>
                 ),
               ),
 
-            // Placement Badge
-            Positioned(
-              bottom: -6,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: badgeColor,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.white, width: 1.5),
-                ),
-                child: Text(
-                  '$position',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w900,
-                    color: position == 1
-                        ? AppColors.onSecondaryContainer
-                        : Colors.white,
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
         const SizedBox(height: 12),
@@ -467,12 +445,14 @@ class _RankingsTabState extends State<RankingsTab>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.emoji_events_outlined,
-                color: position == 1
-                    ? AppColors.secondaryContainer
-                    : AppColors.primaryContainer.withValues(alpha: 0.6),
-                size: position == 1 ? 26 : 20,
+              Image.asset(
+                position == 1
+                    ? 'assets/logotipos/puma_primer_puesto.png'
+                    : position == 2
+                        ? 'assets/logotipos/puma_segundo_puesto.png'
+                        : 'assets/logotipos/puma_tercer_puesto.png',
+                width: position == 1 ? 38 : 32,
+                height: position == 1 ? 38 : 32,
               ),
               const SizedBox(height: 4),
               Text(
@@ -485,8 +465,10 @@ class _RankingsTabState extends State<RankingsTab>
                   fontSize: 10,
                   fontWeight: FontWeight.w900,
                   color: position == 1
-                      ? AppColors.secondary
-                      : Colors.grey.shade600,
+                      ? const Color(0xFFD4A017)
+                      : position == 2
+                          ? const Color(0xFFA8A9AD)
+                          : const Color(0xFFB87333),
                 ),
               ),
             ],

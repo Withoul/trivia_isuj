@@ -10,6 +10,7 @@ import '../../../data/providers/profile_provider.dart';
 import 'dashboard_tab.dart';
 import 'rankings_tab.dart';
 import 'profile_tab.dart';
+import 'tienda_tab.dart';
 
 class PlayerNavigation extends ConsumerStatefulWidget {
   const PlayerNavigation({super.key});
@@ -24,6 +25,7 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
   final List<Widget> _tabs = [
     const DashboardTab(),
     const RankingsTab(),
+    const TiendaTab(),
     const ProfileTab(),
   ];
 
@@ -165,7 +167,8 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
               children: [
                 _buildNavItem(0, Icons.assignment_outlined, 'Quizzes'),
                 _buildNavItem(1, Icons.leaderboard_outlined, 'Rankings'),
-                _buildNavItem(2, Icons.person_outline, 'Profile'),
+                _buildNavItem(2, Icons.shopping_bag_outlined, 'Tienda'),
+                _buildNavItem(3, Icons.person_outline, 'Profile'),
               ],
             ),
           ),
@@ -199,9 +202,9 @@ class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              isSelected && index == 2 ? Icons.emoji_events : icon,
+              isSelected && index == 3 ? Icons.emoji_events : icon,
               color: isSelected
-                  ? (index == 2 ? AppColors.secondaryContainer : Colors.white)
+                  ? (index == 3 ? AppColors.secondaryContainer : Colors.white)
                   : AppColors.onSurfaceVariant.withValues(alpha: 0.7),
               size: 24,
             ),
