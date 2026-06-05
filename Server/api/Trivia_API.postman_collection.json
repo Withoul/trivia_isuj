@@ -1,0 +1,678 @@
+{
+	"info": {
+		"_postman_id": "bfd7e9b0-9f5e-4ba9-b05b-21d3f9b2d075",
+		"name": "Trivia ISUJ - PHP API Connection",
+		"description": "Colección de Postman para probar todos los endpoints de la API en PHP de Trivia ISUJ, incluyendo variables de entorno dinámicas y script para capturar el token JWT.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "0. Database Setup",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/database_setup.php",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"database_setup.php"
+					]
+				},
+				"description": "Inicializa o reinicia las tablas de la base de datos MySQL e inserta los usuarios semilla. Si deseas reiniciar por completo todas las tablas, añade '?reset=true' a la URL."
+			},
+			"response": []
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login - Jugador",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.access_token) {",
+									"    pm.collectionVariables.set(\"jwt_token\", jsonData.access_token);",
+									"    console.log(\"JWT Token guardado automáticamente!\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correo\": \"usuario@usuario.com\",\n    \"contrasena\": \"user1234\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login.php",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login.php"
+							]
+						},
+						"description": "Inicia sesión con la cuenta de Jugador. Guarda automáticamente el access_token en la variable 'jwt_token'."
+					},
+					"response": []
+				},
+				{
+					"name": "Login - Administrador",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.access_token) {",
+									"    pm.collectionVariables.set(\"jwt_token\", jsonData.access_token);",
+									"    console.log(\"JWT Token guardado automáticamente!\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correo\": \"admin@admin.com\",\n    \"contrasena\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login.php",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login.php"
+							]
+						},
+						"description": "Inicia sesión con la cuenta de Administrador. Guarda automáticamente el access_token en la variable 'jwt_token'."
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correo\": \"nuevo@ujapon.edu.ec\",\n    \"contrasena\": \"clave123\",\n    \"primer_nombre\": \"Alejandro\",\n    \"primer_apellido\": \"Gómez\",\n    \"institucion\": \"Sistemas ISUJ\",\n    \"cedula\": \"1755555555\",\n    \"telefono\": \"0955555555\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/register.php",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"register.php"
+							]
+						},
+						"description": "Registra un nuevo usuario jugador en la base de datos."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Player Endpoints",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/profile.php",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"profile.php"
+							]
+						},
+						"description": "Obtiene la información del perfil del usuario autenticado, calculando sus puntos totales acumulados y cantidad de quizzes completados."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Banks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/banks.php",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banks.php"
+							]
+						},
+						"description": "Obtiene la lista de cuestionarios activos para los jugadores."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Questions to Play",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/banks.php?action=play&id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banks.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "play"
+								},
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene las preguntas y sus opciones de respuesta correspondientes a un banco específico."
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Score",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"puntaje_neto\": 45\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/banks.php?action=score&id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banks.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "score"
+								},
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Envía y registra la puntuación del jugador al finalizar una trivia."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Global Rankings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ranks.php",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ranks.php"
+							]
+						},
+						"description": "Obtiene la lista de clasificación global ordenada por puntuación descendente, uniendo jugadores reales y del podio."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Endpoints",
+			"item": [
+				{
+					"name": "Admin - Get All Banks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/banks.php",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banks.php"
+							]
+						},
+						"description": "Obtiene la lista completa de cuestionarios activos e inactivos (Rol Administrador requerido)."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Create Bank",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titulo\": \"Física de Partículas 📐\",\n    \"is_active\": 1,\n    \"es_permanente\": 1,\n    \"tiempo_inicio\": null,\n    \"tiempo_fin\": null,\n    \"tiempo_por_pregunta\": 15,\n    \"puntos_por_pregunta\": 10,\n    \"color_banner\": \"#2563EB\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/banks.php",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banks.php"
+							]
+						},
+						"description": "Crea un nuevo banco de preguntas."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Update Bank",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titulo\": \"Física Cuántica Avanzada 📐\",\n    \"is_active\": 1,\n    \"es_permanente\": 0,\n    \"tiempo_inicio\": \"2026-06-03 12:00:00\",\n    \"tiempo_fin\": \"2026-06-10 18:00:00\",\n    \"tiempo_por_pregunta\": 20,\n    \"puntos_por_pregunta\": 15,\n    \"color_banner\": \"#7C3AED\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/banks.php?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banks.php"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Actualiza la información y configuración de un banco de preguntas existente."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Create Question",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"texto_pregunta\": \"¿Cuál es la velocidad aproximada de la luz en el vacío?\",\n    \"respuestas\": [\n        {\"texto_respuesta\": \"150,000 km/s\", \"es_correcta\": false},\n        {\"texto_respuesta\": \"300,000 km/s\", \"es_correcta\": true},\n        {\"texto_respuesta\": \"500,000 km/s\", \"es_correcta\": false},\n        {\"texto_respuesta\": \"1,000,000 km/s\", \"es_correcta\": false}\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/questions.php?bank_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"questions.php"
+							],
+							"query": [
+								{
+									"key": "bank_id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Crea una pregunta con sus alternativas de respuesta dentro de un banco."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Update Question",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"texto_pregunta\": \"¿Cuál es la velocidad de la luz en el vacío? (Actualizada)\",\n    \"respuestas\": [\n        {\"texto_respuesta\": \"100,000 km/s\", \"es_correcta\": false},\n        {\"texto_respuesta\": \"300,000 km/s\", \"es_correcta\": true},\n        {\"texto_respuesta\": \"400,000 km/s\", \"es_correcta\": false},\n        {\"texto_respuesta\": \"600,000 km/s\", \"es_correcta\": false}\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/questions.php?bank_id=1&question_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"questions.php"
+							],
+							"query": [
+								{
+									"key": "bank_id",
+									"value": "1"
+								},
+								{
+									"key": "question_id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Actualiza el enunciado y las alternativas de una pregunta existente."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Delete Question",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/questions.php?bank_id=1&question_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"questions.php"
+							],
+							"query": [
+								{
+									"key": "bank_id",
+									"value": "1"
+								},
+								{
+									"key": "question_id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Elimina permanentemente una pregunta y sus alternativas de un banco."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users.php",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users.php"
+							]
+						},
+						"description": "Obtiene la lista de todos los usuarios registrados."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin - Update User Profile/Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correo\": \"usuario@usuario.com\",\n    \"primer_nombre\": \"David\",\n    \"primer_apellido\": \"L. Modificado\",\n    \"institucion\": \"Sistemas Avanzados ISUJ\",\n    \"cedula\": \"1722222222\",\n    \"telefono\": \"0988888888\",\n    \"tipo_perfil\": \"JUGADOR\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users.php?id=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users.php"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Actualiza la información de perfil o el tipo de perfil (Rol) de un usuario en particular."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://institutoj17.sg-host.com/PHP_API/PHP_API",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
